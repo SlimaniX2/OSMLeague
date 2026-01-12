@@ -1094,11 +1094,11 @@
                         <div class="title-icon">
                             <i class="fas fa-info-circle"></i>
                         </div>
-                        <h2 data-en="About The League" data-ar="عن البطولة">عن الدوري</h2>
+                        <h2 data-en="About The League" data-ar="عن الدوري">عن الدوري</h2>
                     </div>
                     
                     <div class="card animate-in" style="animation-delay: 0.1s;">
-                        <h3 data-en="League Definition" data-ar="تعريف البطولة">تعريف الدوري</h3>
+                        <h3 data-en="League Definition" data-ar="تعريف الدوري">تعريف الدوري</h3>
                         <p data-en="The Best Manager League is a competitive football management tournament played on the Online Soccer Manager (OSM) platform. It brings together experienced and emerging coaches from different countries to compete over a full league season, combining tactical depth, long-term planning, and direct competition. The league is built on continuity, rivalry, and historical prestige, making every season part of an evolving competitive legacy." data-ar="بطولة المدرب الأفضل هي بطولة إدارة كرة قدم تنافسية تُلعب على منصة Online Soccer Manager (OSM). تجمع البطولة مدربين ذوي خبرة وآخرين ناشئين من دول مختلفة للتنافس خلال موسم دوري كامل، حيث تجمع بين العمق التكتيكي، التخطيط طويل الأمد، والمنافسة المباشرة. تُبنى البطولة على الاستمرارية، التنافس، والهيبة التاريخية، مما يجعل كل موسم جزءاً من إرث تنافسي متطور."></p>
                     </div>
                     
@@ -1316,7 +1316,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3 data-en="Best Manager League" data-ar="بطولة المدرب الأفضل">بطولة المدرب الأفضل</h3>
+                    <h3 data-en="Best Manager League" data-ar="دوري المدرب الأفضل">دوري المدرب الأفضل</h3>
                     <p data-en="The premier competitive football management tournament on Online Soccer Manager (OSM). Bringing together coaches from different countries to compete in a full league season." data-ar="أبرز بطولة إدارة كرة قدم تنافسية على لعبة Online Soccer Manager (OSM). تجمع المدربين من دول مختلفة للتنافس في موسم دوري كامل."></p>
                     
                     <div class="social-links">
@@ -1343,13 +1343,33 @@
             </div>
             
             <div class="copyright">
-                <p data-en="&copy; 2026 Best Manager League (OSM). All rights reserved." data-ar="&copy; 2026 بطولة المدرب الأفضل (OSM). جميع الحقوق محفوظة.">&copy; 2026 بطولة المدرب الأفضل (OSM). جميع الحقوق محفوظة.</p>
+                <p data-en="&copy; 2026 Best Manager League (OSM). All rights reserved." data-ar="&copy; 2026 دوري المدرب الأفضل . جميع الحقوق محفوظة.">&copy; 2026 دوري المدرب الأفضل . جميع الحقوق محفوظة.</p>
             </div>
         </div>
     </footer>
 
     <!-- JavaScript -->
     <script>
+        // Participants images from web
+        const participantImages = {
+            "أنيس": "https://i.ibb.co/39SfXTrj/ANIS.jpg",
+            "رجاوي": "https://i.ibb.co/SXrSHt7h/RAJAWI.jpg",
+            "مهند": "https://i.ibb.co/v6zK3qDD/MOHANED.jpg",
+            "خالد": "https://i.ibb.co/NnZsnyc9/KHALED.jpg",
+            "كارلو": "https://i.ibb.co/FTrKXtG/CHARLO.jpg",
+            "فما حاجة": "https://i.ibb.co/whSXgj2d/FAMA-7-AJA.jpg",
+            "محمدو": "https://i.ibb.co/Xf7XKZVd/MUHAMADU.jpg",
+            "عبدالله": "https://i.ibb.co/9m5jT9x3/ABDELLAH.jpg",
+            "كنان": "https://i.ibb.co/hxVjH260/KENAN.jpg",
+            "أمين": "https://i.ibb.co/fzP1B44n/AMINE.jpg",
+            "صلاح الدين": "https://i.ibb.co/gbtdSdXJ/SALAHEDDINE.jpg",
+            "رضا": "https://i.ibb.co/bg5qggxm/RIDA.jpg",
+            "مشيري": "https://i.ibb.co/V08SRWBn/MECHERI.jpg",
+            "سراج": "https://i.ibb.co/7dRwnQv4/SIRADJ.jpg",
+            "الباغر": "https://i.ibb.co/QjFK9QwD/ALBAGER.jpg",
+            "رياض": "https://i.ibb.co/DHDcDS3F/RIYADH.jpg",
+            "زيد": "https://i.ibb.co/RpYZWmkP/ZAID.jpg"
+        };
         // League database
         const leagueData = {
             "league": {
@@ -1873,8 +1893,9 @@
                 participantCard.style.animationDelay = `${0.1 + index * 0.05}s`;
                 
                 const participantName = currentLang === 'ar' ? participant : translateNameToEnglish(participant);
-                const participantPhoto = `https://ui-avatars.com/api/?name=${encodeURIComponent(participantName)}&background=${encodeURIComponent('#800000')}&color=fff&size=140&bold=true&font-size=0.5`;
-                
+                const participantPhoto = participantImages[participantName]
+                   || `https://ui-avatars.com/api/?name=${encodeURIComponent(participantName)}&background=800000&color=fff&size=140&bold=true&font-size=0.5`;
+
                 // Only show team for season 10
                 let teamHTML = '';
                 if (seasonNum === 10) {
