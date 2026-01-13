@@ -1018,6 +1018,34 @@
         ::-webkit-scrollbar-thumb:hover {
             background: var(--dark-red-light);
         }
+        .season-countdown {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .time-box {
+            background: rgba(128, 0, 0, 0.9);
+            color: #fff;
+            padding: 15px 18px;
+            border-radius: 14px;
+            min-width: 80px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        .time-box span {
+            font-size: 28px;
+            font-weight: bold;
+            display: block;
+        }
+
+        .time-box small {
+            font-size: 12px;
+            opacity: 0.85;
+        }
     </style>
 </head>
 <body lang="ar">
@@ -1061,7 +1089,25 @@
         <!-- Hero Banner -->
         <section class="hero-banner">
             <div class="hero-content">
-                <div class="hero-badge" data-en="10th Season - Coming Soon" data-ar="الموسم العاشر - قريباً">الموسم العاشر - قريباً</div>
+                <div class="hero-badge" data-en="10th Season - Coming Soon" data-ar="الموسم العاشر - باقي من الزمن :">الموسم العاشر- باقي من الزمن :</div>
+                <div id="countdown" class="season-countdown">
+                    <div class="time-box">
+                        <span id="days">00</span>
+                        <small>يوم</small>
+                    </div>
+                    <div class="time-box">
+                        <span id="hours">00</span>
+                        <small>ساعة</small>
+                    </div>
+                    <div class="time-box">
+                        <span id="minutes">00</span>
+                        <small>دقيقة</small>
+                    </div>
+                    <div class="time-box">
+                        <span id="seconds">00</span>
+                        <small>ثانية</small>
+                    </div>
+                </div>
                 <h1 data-en="Best Manager League" data-ar="دوري المدرب الأفضل">دوري المدرب الأفضل</h1>
                 <p data-en="The ultimate competitive football management tournament on Online Soccer Manager" data-ar="أعلى بطولة إدارة كرة قدم تنافسية على لعبة Online Soccer Manager">أعلى بطولة إدارة كرة قدم تنافسية على لعبة Online Soccer Manager</p>
                 <a href="https://i.ibb.co/FkXHbVc7/COACH-LIST-with-country.jpg" class="btn" style="margin-top: 40px;">
@@ -1329,7 +1375,7 @@
                     <ul style="list-style: none; font-size: 1.1rem;">
                         <li><a href="https://osmleague.ddns.net/" class="footer-link" data-en="League Overview" data-ar="نظرة عامة" style="display: block; padding: 10px 0; border-bottom: 1px solid var(--card-border);">نظرة عامة</a></li>
                         <li><a href="#champions" class="footer-link" data-en="Champions Archive" data-ar="سجل الأبطال" style="display: block; padding: 10px 0; border-bottom: 1px solid var(--card-border);">سجل الأبطال</a></li>
-                        <li><a href="#season10" class="footer-link" data-en="Season 10" data-ar="الموسم العاشر" style="display: block; padding: 10px 0; border-bottom: 1px solid var(--card-border);">الموسم العاشر</a></li>
+                        <li><a href="https://i.ibb.co/FkXHbVc7/COACH-LIST-with-country.jpg" class="footer-link" data-en="Season 10 Coaches List" data-ar="لائحة مدربي الموسم العاشر" style="display: block; padding: 10px 0; border-bottom: 1px solid var(--card-border);">الموسم العاشر</a></li>
                         <li><a href="#news" class="footer-link" data-en="Latest News" data-ar="آخر الأخبار" style="display: block; padding: 10px 0;">آخر الأخبار</a></li>
                     </ul>
                 </div>
@@ -2263,6 +2309,34 @@
                 observer.observe(el);
             });
         }
+        // Season 10 countdown
+        const seasonStartDate = new Date("2026-02-01T21:00:00").getTime();
+        // ⬆️ عدّل التاريخ والساعة حسب موعد انطلاق الموسم
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = seasonStartDate - now;
+
+            if (distance < 0) {
+                document.getElementById("countdown").innerHTML =
+                    "<strong>🔥 الموسم العاشر انطلق!</strong>";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").textContent = days;
+            document.getElementById("hours").textContent = hours;
+            document.getElementById("minutes").textContent = minutes;
+            document.getElementById("seconds").textContent = seconds;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
     </script>
 </body>
 </html>
