@@ -1114,10 +1114,6 @@
                     <i class="fas fa-play-circle"></i>
                     <span data-en="OSM League - RAMADAN 2026" data-ar="دوري المدرب الأفضل - رمضان 2026">دوري المدرب الأفضل - رمضان 2026</span>
                 </a>
-                <a href="https://osmleague.ddns.net/docs/match_schedule.pdf" class="btn" style="margin-top: 40px;">
-                    <i class="fas fa-play-circle"></i>
-                    <span data-en="Match Schedule" data-ar="جدول المباريات">جدول المباريات</span>
-                </a>
             </div>
         </section>
 
@@ -1128,13 +1124,13 @@
                     <div class="title-icon">
                         <i class="fas fa-list-ol"></i>
                     </div>
-                    <h2 data-ar="الترتيب الحالي - الموسم التحضيري" data-en="Current Standings - Pre Season">
+                    <h2 data-ar="الترتيب النهائي" data-en="Current Standings - Pre Season">
                         الترتيب الحالي
                     </h2>
                 </div>
 
             <img 
-                src="https://i.ibb.co/nZKKvqf/RANKING35.jpg"
+                src="https://i.ibb.co/v6rbyRrv/RANKING38.jpg"
                 alt="Best Manager League"
                 class="overview-image">
 
@@ -1174,7 +1170,7 @@
                     
                     <div class="stats-container">
                         <div class="card stat-card animate-in" style="animation-delay: 0.1s;">
-                            <div class="stat-number" id="totalSeasons">9</div>
+                            <div class="stat-number" id="totalSeasons">10</div>
                             <div class="stat-label" data-en="Seasons Completed" data-ar="موسم مكتمل">موسم مكتمل</div>
                         </div>
                         
@@ -1426,7 +1422,7 @@
                 "name": "Best Manager League (OSM)",
                 "description": "بطولة المدرب الأفضل على لعبة OSM",
                 "format": "دوري + كأس",
-                "total_seasons_played": 9,
+                "total_seasons_played": 10,
                 "current_season": 10,
                 "leagues_used": {
                     "Premier League": 8,
@@ -1582,7 +1578,8 @@
                         "start": "2026-02-01",
                         "end": "2026-03-19"
                     },
-                    "status": "قادم",
+                    "league_champion": "رجاوي",
+                    "cup_champion": "رجاوي",
                     "participants": [
                         "رجاوي",
                         "أنيس",
@@ -1640,7 +1637,7 @@
             "صلاح الدين": "https://upload.wikimedia.org/wikipedia/en/thumb/9/9a/Aston_Villa_FC_new_crest.svg/250px-Aston_Villa_FC_new_crest.svg.png",
             "رضا": "https://upload.wikimedia.org/wikipedia/en/thumb/e/e5/AFC_Bournemouth_%282013%29.svg/960px-AFC_Bournemouth_%282013%29.svg.png",
             "مشيري": "https://upload.wikimedia.org/wikipedia/en/thumb/c/cc/Chelsea_FC.svg/250px-Chelsea_FC.svg.png",
-            "سراج": "https://upload.wikimedia.org/wikipedia/sco/thumb/7/7c/Everton_FC_logo.svg/1002px-Everton_FC_logo.svg.png",
+            "سراج": "https://upload.wikimedia.org/wikipedia/en/thumb/7/7c/Everton_FC_logo.svg/250px-Everton_FC_logo.svg.png",
             "زيد": "https://upload.wikimedia.org/wikipedia/en/thumb/c/c2/West_Ham_United_FC_logo.svg/250px-West_Ham_United_FC_logo.svg.png"
         };
 
@@ -1705,6 +1702,42 @@
 
         // News data
         const newsData = [
+            {
+                id: 20,
+                title_en: "",
+                title_ar: "نهاية الموسم العاشر",
+                date: "2026-3-19",
+                image: "https://i.ibb.co/s9WHv0qQ/last.jpg",
+                excerpt_en: "",
+                excerpt_ar: "وانتهى دوري المدرب الأفضل في موسمه العاشر ، موسم عشنا فيه كل أنواع الحماس و المتعة والضغط ، موسم هو الأكبر تاريخيا بدون منازع ، وصل فيها كل مدرب لقمة آدائه. كان هذا كل شيء لهذا الموسم ونلتقي في موسم قادم ان شاء الله.<br>عيد سعيد."
+            },
+            {
+                id: 19,
+                title_en: "",
+                title_ar: "تم الإعلان عن جوائز الموسم العاشر",
+                date: "2026-3-19",
+                image: "https://i.ibb.co/MxshyDqp/image.jpg",
+                excerpt_en: "",
+                excerpt_ar: "مدرب الموسم : رجاوي / لاعب الموسم : فالفيردي / الحذاء الذهبي : لامين يامال / أفضل هجوم : مانشستر سيتي / أفضل دفاع : مانشستر سيتي / أفضل فريق : مانشستر سيتي / مفاجئة الموسم : بورنموث - برايتون"
+            },
+            {
+                id: 18,
+                title_en: "",
+                title_ar: "رجاوي بطل كأس انجلترا",
+                date: "2026-3-17",
+                image: "https://i.ibb.co/Q7BWX3qq/image.jpg",
+                excerpt_en: "",
+                excerpt_ar: "حقق المدرب رجاوي لقب كأس انجلترا بعد فوزه على كنان - برايتون ب 3 أهداف مقابل هدف ليحقق لقبه الثاني في المنافسة."
+            },
+            {
+                id: 17,
+                title_en: "",
+                title_ar: "رجاوي بطل الدوري",
+                date: "2026-3-16",
+                image: "https://i.ibb.co/m5V4NKQ2/image.jpg",
+                excerpt_en: "",
+                excerpt_ar: "حسنم نادي مانشستر سيتي تحت قيادة المدرب رجاوي لقب الدوري الانجليزي بعد الفوز الليلة على فولهام ، وبالتالي يصبح رجاوي أكثر مدرب فاز بالدوري مناصفة مع أنيس ب3 مرات."
+            },
             {
                 id: 16,
                 title_en: "Bournemouth, First Half Champion",
@@ -2395,7 +2428,7 @@
 
             if (distance < 0) {
                 document.getElementById("countdown").innerHTML =
-                    "<strong>🔥 الموسم العاشر انطلق!</strong>";
+                    "<strong>انتهى الموسم العاشر</strong>";
                 return;
             }
 
