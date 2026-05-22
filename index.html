@@ -4047,11 +4047,11 @@ function buildSeasonHistory(name) {
         if (!s.participants || !s.participants.includes(name)) continue;
         let achievement = '', note = '';
         if (s.status === 'ملغى') {
-            achievement = t('مشارك', 'Participant');
+            achievement = `<span class="badge-part">${t('مشارك', 'Participant')}</span>`;
             note = `<span class="badge-part">${t('ملغى','Cancelled')}</span>`;
         }
         else if (s.status === 'قادم') {
-            achievement = t('مشارك', 'Participant');
+            achievement = `<span class="badge-part">${t('مشارك', 'Participant')}</span>`;
             note = `<span class="badge-part">${t('قادم','Cancelled')}</span>`;
         }
          else {
