@@ -1,0 +1,4680 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>دوري المدرب الأفضل (OSM)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* CSS Variables - ألوان الدوري */
+        :root {
+            --dark-red: #064733;
+            --green: #ff7805;
+            --dark-red-light: #40b42f;
+            --green-light: #fe9c49;
+            --dark-bg: #0f0f0f;
+            --darker-bg: #080808;
+            --card-bg: #1a1a1a;
+            --card-border: #333333;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --text-muted: #888888;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            --shadow-light: 0 5px 15px rgba(0, 0, 0, 0.3);
+            --radius: 16px;
+            --radius-sm: 8px;
+            --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            --gradient-red: linear-gradient(135deg, #064733 0%, #40b42f 100%);
+            --gradient-green: linear-gradient(135deg, #ff7805 0%, #fe9c49 100%);
+            --gradient-dark: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+        }
+        .overview-image {
+            width: 100%;
+            max-width: 900px;
+            margin: 40px auto;
+            display: block;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+
+
+        /* اللغة الإنجليزية */
+        [lang="en"] {
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            direction: ltr;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            line-height: 1.8;
+            color: var(--text-primary);
+            background-color: var(--dark-bg);
+            overflow-x: hidden;
+            transition: var(--transition);
+        }
+
+        body[lang="en"] {
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            direction: ltr;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Typography */
+        h1, h2, h3, h4, h5 {
+            font-weight: 800;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(90deg, var(--dark-red), var(--green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            position: relative;
+            padding-bottom: 15px;
+            display: inline-block;
+        }
+
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100px;
+            height: 6px;
+            background: var(--gradient-red);
+            border-radius: 3px;
+        }
+
+        body[lang="en"] h2:after {
+            right: auto;
+            left: 0;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            color: var(--green);
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: var(--gradient-dark);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 2px solid var(--dark-red);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: var(--transition);
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-img {
+            background: var(--gradient-red);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(0, 255, 21, 0.5);
+        }
+
+        .logo-img:before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-green);
+            opacity: 0.3;
+            border-radius: 50%;
+        }
+
+        .logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logo-text h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .logo-text p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        nav a {
+            color: var(--text-secondary);
+            font-weight: 600;
+            padding: 10px 0;
+            position: relative;
+            transition: var(--transition);
+            font-size: 1.1rem;
+        }
+
+        nav a:before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 0;
+            height: 3px;
+            background: var(--gradient-green);
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+
+        body[lang="en"] nav a:before {
+            right: auto;
+            left: 0;
+        }
+
+        nav a:hover {
+            color: var(--green);
+        }
+
+        nav a:hover:before {
+            width: 100%;
+        }
+
+        nav a.active {
+            color: var(--green);
+        }
+
+        nav a.active:before {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: 2px solid var(--dark-red);
+            color: var(--text-primary);
+            width: 50px;
+            height: 50px;
+            border-radius: var(--radius-sm);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 1100;
+            position: relative;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+
+        .mobile-menu-btn:hover {
+            background: var(--dark-red);
+        }
+
+        .language-toggle {
+            display: flex;
+            gap: 10px;
+            margin-right: 30px;
+        }
+
+        .lang-btn {
+            background: var(--card-bg);
+            border: 2px solid var(--card-border);
+            color: var(--text-secondary);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lang-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-light);
+        }
+
+        .lang-btn.active {
+            background: var(--gradient-red);
+            color: white;
+            border-color: var(--dark-red);
+        }
+
+        /* Main Content */
+        main {
+            min-height: 100vh;
+            padding-top: 120px;
+        }
+
+        .page-header {
+            background: linear-gradient(rgba(15, 15, 15, 0.9), rgba(15, 15, 15, 0.9)), 
+                        url('https://i.ibb.co/9mRF7TZv/NEW-SEASON2.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            padding: 120px 0;
+            text-align: center;
+            margin-bottom: 80px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-red);
+            opacity: 0.1;
+            z-index: 1;
+        }
+
+        .page-header h1 {
+            font-size: 4.5rem;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .page-header p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
+            color: var(--text-secondary);
+        }
+
+        /* Section Styling */
+        .section {
+            margin-bottom: 100px;
+            position: relative;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 50px;
+        }
+
+        .title-icon {
+            width: 60px;
+            height: 60px;
+            background: var(--gradient-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        /* Card Layout */
+        .card {
+            background: var(--gradient-dark);
+            border-radius: var(--radius);
+            border: 2px solid var(--card-border);
+            padding: 35px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 5px;
+            background: var(--gradient-red);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--dark-red);
+            box-shadow: var(--shadow);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: var(--gradient-red);
+            color: white;
+            padding: 16px 35px;
+            border-radius: var(--radius);
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            font-size: 1.1rem;
+        }
+
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-green);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(128, 0, 0, 0.4);
+        }
+
+        .btn:hover:before {
+            opacity: 1;
+        }
+
+        .btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--gradient-dark);
+            border-top: 2px solid var(--dark-red);
+            padding: 80px 0 30px;
+            margin-top: 100px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+
+        .footer-section h3 {
+            color: var(--green);
+            margin-bottom: 30px;
+            font-size: 1.5rem;
+        }
+
+        .footer-section p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: var(--card-bg);
+            border-radius: 50%;
+            transition: var(--transition);
+            border: 2px solid var(--card-border);
+        }
+
+        .social-links a:hover {
+            background: var(--gradient-red);
+            transform: translateY(-5px);
+            border-color: var(--dark-red);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--card-border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Season Selector */
+        .season-selector {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 50px;
+            justify-content: center;
+        }
+
+        .season-btn {
+            background: var(--gradient-dark);
+            border: 2px solid var(--card-border);
+            color: var(--text-secondary);
+            padding: 15px 25px;
+            border-radius: var(--radius);
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            min-width: 120px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .season-btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 0;
+            height: 100%;
+            background: var(--gradient-red);
+            transition: var(--transition);
+        }
+
+        body[lang="en"] .season-btn:before {
+            right: auto;
+            left: 0;
+        }
+
+        .season-btn:hover {
+            color: white;
+            border-color: var(--dark-red);
+        }
+
+        .season-btn:hover:before {
+            width: 100%;
+        }
+
+        .season-btn.active {
+            background: var(--gradient-red);
+            color: white;
+            border-color: var(--dark-red);
+        }
+
+        .season-btn span {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Champions Display */
+        .champions-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+        }
+
+        .champion-card {
+            text-align: center;
+            padding: 50px 30px;
+        }
+
+        .champion-card .trophy-icon {
+            font-size: 5rem;
+            color: gold;
+            margin-bottom: 30px;
+            filter: drop-shadow(0 5px 15px rgba(255, 215, 0, 0.3));
+        }
+
+        .champion-name {
+            font-size: 3rem;
+            font-weight: 900;
+            margin: 30px 0;
+            color: var(--green);
+            text-shadow: 0 3px 10px rgba(14, 199, 106, 0.3);
+        }
+
+        .champion-season {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+
+        /* Participants Grid */
+        .participants-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 30px;
+        }
+
+        .participant-card {
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .participant-photo {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 25px;
+            border: 4px solid var(--dark-red);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            transition: var(--transition);
+        }
+
+        .participant-card:hover .participant-photo {
+            border-color: var(--green);
+            transform: scale(1.1);
+        }
+
+        .participant-name {
+            font-weight: 800;
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: var(--text-primary);
+        }
+
+        .participant-team {
+            font-size: 1rem;
+            color: var(--green);
+            padding: 8px 15px;
+            background: rgba(14, 199, 106, 0.1);
+            border-radius: var(--radius-sm);
+            display: inline-block;
+            margin-top: 10px;
+        }
+
+        /* Season 10 Coaches */
+        .coaches-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 35px;
+        }
+
+        .coach-card {
+            text-align: center;
+        }
+
+        .team-logo {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            background: var(--gradient-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: var(--green);
+            border: 3px solid var(--dark-red);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .team-name {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin: 15px 0;
+        }
+
+        .coach-info {
+            background: rgba(128, 0, 0, 0.1);
+            padding: 20px;
+            border-radius: var(--radius-sm);
+            margin-top: 20px;
+            border: 1px solid var(--card-border);
+        }
+
+        /* Special Matches */
+        .matches-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+        }
+
+        .match-card {
+            overflow: hidden;
+        }
+
+        .match-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: var(--radius) var(--radius) 0 0;
+            transition: var(--transition);
+        }
+
+        .match-card:hover .match-image {
+            transform: scale(1.05);
+        }
+
+        .match-content {
+            padding: 35px;
+        }
+
+        .match-type {
+            display: inline-block;
+            background: var(--gradient-red);
+            color: white;
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+        }
+
+        .match-teams {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+            font-size: 1.4rem;
+            font-weight: 800;
+        }
+
+        .vs {
+            color: var(--green);
+            font-size: 2rem;
+        }
+
+        /* News Grid */
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 40px;
+        }
+
+        .news-card {
+            overflow: hidden;
+        }
+
+        .news-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .news-card:hover .news-image {
+            transform: scale(1.05);
+        }
+
+        .news-content {
+            padding: 30px;
+        }
+
+        .news-date {
+            font-size: 1rem;
+            color: var(--green);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .news-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--text-primary);
+        }
+
+        /* League Stats */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .stat-card {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .stat-number {
+            font-size: 4rem;
+            font-weight: 900;
+            color: var(--green);
+            margin-bottom: 15px;
+            text-shadow: 0 5px 15px rgba(14, 199, 106, 0.3);
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        /* Hero Banner */
+        .hero-banner {
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), 
+                        url('https://i.ibb.co/9mRF7TZv/NEW-SEASON2.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            margin-bottom: 100px;
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            padding: 0 20px;
+        }
+
+        .hero-badge {
+            background: var(--gradient-red);
+            color: white;
+            padding: 12px 30px;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 30px;
+            font-size: 1.2rem;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            h1 {
+                font-size: 3rem;
+            }
+            
+            h2 {
+                font-size: 2.2rem;
+            }
+            
+            .page-header h1 {
+                font-size: 3.5rem;
+            }
+            
+            .champions-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 992px) {
+            nav {
+                position: fixed;
+                top: 120px;
+                right: -300px;
+                width: 300px;
+                height: calc(100vh - 120px);
+                background: var(--gradient-dark);
+                transition: var(--transition);
+                z-index: 999;
+                border-left: 2px solid var(--dark-red);
+                padding: 40px 20px;
+            }
+            
+            nav.active {
+                right: 0;
+            }
+            
+            body[lang="en"] nav {
+                right: auto;
+                left: -300px;
+            }
+            
+            body[lang="en"] nav.active {
+                left: 0;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .page-header {
+                padding: 100px 0;
+            }
+            
+            .page-header h1 {
+                font-size: 2.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+            
+            .logo {
+                order: 1;
+            }
+            
+            .language-toggle {
+                order: 2;
+                margin-right: auto;
+            }
+            
+            .mobile-menu-btn {
+                order: 3;
+            }
+            
+            .page-header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .page-header p {
+                font-size: 1.2rem;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            h2 {
+                font-size: 2rem;
+            }
+            
+            .matches-container,
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .coaches-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .hero-banner {
+                height: 500px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .container {
+                padding: 0 15px;
+            }
+            
+            .logo-img {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .logo-text h1 {
+                font-size: 1.4rem;
+            }
+            
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .coaches-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .participants-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .champion-name {
+                font-size: 2.2rem;
+            }
+            
+            .hero-banner {
+                height: 400px;
+            }
+            
+            .stat-number {
+                font-size: 3rem;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--darker-bg);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--gradient-red);
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--dark-red-light);
+        }
+        .season-countdown {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .time-box {
+            background: rgba(0, 128, 49, 0.123);
+            color: #ff7805;
+            padding: 15px 18px;
+            border-radius: 14px;
+            min-width: 80px;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
+
+        .time-box span {
+            font-size: 28px;
+            font-weight: bold;
+            display: block;
+        }
+
+        .time-box small {
+            font-size: 12px;
+            opacity: 0.85;
+        }
+    
+
+/* ===== Coaches Section Integrated ===== */
+.coach-selector-section {
+    padding: 60px 0 30px;
+}
+.coaches-selector-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+.coach-select-btn {
+    background: var(--gradient-dark);
+    border: 2px solid var(--card-border);
+    color: var(--text-secondary);
+    padding: 20px 10px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+.coach-select-btn:hover {
+    border-color: var(--dark-red);
+    color: white;
+    transform: translateY(-5px);
+}
+.coach-select-btn.active {
+    background: var(--gradient-red);
+    color: white;
+    border-color: var(--dark-red);
+}
+.coach-select-btn img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 0 auto 12px;
+    display: block;
+    border: 3px solid var(--card-border);
+}
+.profile-hero {
+    background: linear-gradient(135deg, rgba(6,71,51,0.85) 0%, rgba(64,180,47,0.4) 100%),
+                url('https://i.ibb.co/9mRF7TZv/NEW-SEASON2.jpg');
+    background-size: cover;
+    background-position: center;
+    padding: 80px 0 60px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 60px;
+    border-radius: var(--radius);
+}
+.profile-hero-inner {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+.profile-avatar {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 6px solid var(--dark-red);
+}
+.profile-coach-name {
+    font-size: 4rem;
+    font-weight: 900;
+    margin-bottom: 10px;
+}
+.profile-tags {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+.profile-tag {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: var(--text-secondary);
+    padding: 8px 18px;
+    border-radius: 50px;
+}
+.profile-quick-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    margin-bottom: 60px;
+}
+.quick-stat {
+    text-align: center;
+    padding: 30px 20px;
+}
+.quick-stat-num {
+    font-size: 3rem;
+    font-weight: 900;
+    color: var(--green);
+}
+.achievements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+}
+.achievement-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 25px;
+    background: var(--gradient-dark);
+    border: 2px solid var(--card-border);
+    border-radius: var(--radius);
+}
+.season-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+.season-table th {
+    background: var(--gradient-red);
+    color: white;
+    padding: 18px 20px;
+}
+.season-table td {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--card-border);
+    background: var(--card-bg);
+}
+.bio-text {
+    font-size: 1.15rem;
+    line-height: 2;
+}
+.no-profile {
+    text-align: center;
+    padding: 100px 20px;
+}
+#profileContent {
+    display: none;
+}
+
+
+[lang="en"] { font-family: 'Segoe UI', 'Roboto', sans-serif; direction: ltr; }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            line-height: 1.8;
+            color: var(--text-primary);
+            background-color: var(--dark-bg);
+            overflow-x: hidden;
+            transition: var(--transition);
+        }
+        body[lang="en"] { font-family: 'Segoe UI', 'Roboto', sans-serif; direction: ltr; }
+
+        .container { width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+
+        h1, h2, h3, h4, h5 { font-weight: 800; line-height: 1.2; margin-bottom: 1.5rem; }
+
+        h1 {
+            font-size: 3.5rem;
+            background: linear-gradient(90deg, var(--dark-red), var(--green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            position: relative;
+            padding-bottom: 15px;
+            display: inline-block;
+        }
+        h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 100px;
+            height: 6px;
+            background: var(--gradient-red);
+            border-radius: 3px;
+        }
+        body[lang="en"] h2:after { right: auto; left: 0; }
+
+        h3 { font-size: 1.8rem; color: var(--green); }
+
+        p { margin-bottom: 1.5rem; color: var(--text-secondary); font-size: 1.1rem; }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* === Header & Navigation === */
+        header {
+            background: var(--gradient-dark);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 2px solid var(--dark-red);
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .logo { display: flex; align-items: center; gap: 20px; transition: var(--transition); cursor: pointer; }
+        .logo:hover { transform: scale(1.05); }
+
+        .logo-img {
+            background: var(--gradient-red);
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
+            box-shadow: 0 0 30px rgba(0, 255, 21, 0.5);
+        }
+        .logo-img:before {
+            content: '';
+            position: absolute;
+            width: 100%; height: 100%;
+            background: var(--gradient-green);
+            opacity: 0.3;
+            border-radius: 50%;
+        }
+
+        .logo-text { display: flex; flex-direction: column; }
+        .logo-text h1 { font-size: 1.8rem; margin-bottom: 5px; }
+        .logo-text p { font-size: 0.9rem; color: var(--text-muted); margin: 0; }
+
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        nav a {
+            color: var(--text-secondary);
+            font-weight: 600;
+            padding: 10px 0;
+            position: relative;
+            transition: var(--transition);
+            font-size: 1.1rem;
+        }
+        nav a:before {
+            content: '';
+            position: absolute;
+            bottom: 0; right: 0;
+            width: 0; height: 3px;
+            background: var(--gradient-green);
+            transition: var(--transition);
+            border-radius: 2px;
+        }
+        body[lang="en"] nav a:before { right: auto; left: 0; }
+        nav a:hover { color: var(--green); }
+        nav a:hover:before { width: 100%; }
+        nav a.active { color: var(--green); }
+        nav a.active:before { width: 100%; }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: 2px solid var(--dark-red);
+            color: var(--text-primary);
+            width: 50px; height: 50px;
+            border-radius: var(--radius-sm);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 1100;
+            position: relative;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        .mobile-menu-btn:hover { background: var(--dark-red); }
+
+        .language-toggle { display: flex; gap: 10px; margin-right: 30px; }
+        .lang-btn {
+            background: var(--card-bg);
+            border: 2px solid var(--card-border);
+            color: var(--text-secondary);
+            width: 50px; height: 50px;
+            border-radius: 50%;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .lang-btn:hover { transform: translateY(-3px); box-shadow: var(--shadow-light); }
+        .lang-btn.active { background: var(--gradient-red); color: white; border-color: var(--dark-red); }
+
+        main { min-height: 100vh; padding-top: 120px; }
+
+        /* === Cards === */
+        .card {
+            background: var(--gradient-dark);
+            border-radius: var(--radius);
+            border: 2px solid var(--card-border);
+            padding: 35px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .card:before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 100%; height: 5px;
+            background: var(--gradient-red);
+        }
+        .card:hover { transform: translateY(-10px); border-color: var(--dark-red); box-shadow: var(--shadow); }
+
+        /* === Buttons === */
+        .btn {
+            display: inline-flex;
+            align-items: center; justify-content: center;
+            gap: 10px;
+            background: var(--gradient-red);
+            color: white;
+            padding: 16px 35px;
+            border-radius: var(--radius);
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+            position: relative; overflow: hidden;
+            font-size: 1.1rem;
+        }
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 100%; height: 100%;
+            background: var(--gradient-green);
+            opacity: 0;
+            transition: var(--transition);
+        }
+        .btn:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(128,0,0,0.4); }
+        .btn:hover:before { opacity: 1; }
+        .btn span { position: relative; z-index: 1; }
+
+        /* === Section === */
+        .section { margin-bottom: 100px; position: relative; }
+
+        .section-title { display: flex; align-items: center; gap: 20px; margin-bottom: 50px; }
+
+        .title-icon {
+            width: 60px; height: 60px;
+            background: var(--gradient-red);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .season-btn {
+            background: var(--gradient-dark);
+            border: 2px solid var(--card-border);
+            color: var(--text-secondary);
+            padding: 15px 25px;
+            border-radius: var(--radius);
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            min-width: 120px;
+            position: relative; overflow: hidden;
+            font-family: 'Cairo', sans-serif;
+        }
+        .season-btn.active { background: var(--gradient-red); color: white; border-color: var(--dark-red); }
+
+        /* === Footer === */
+        footer {
+            background: var(--gradient-dark);
+            border-top: 2px solid var(--dark-red);
+            padding: 80px 0 30px;
+            margin-top: 100px;
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 50px;
+            margin-bottom: 50px;
+        }
+        .footer-section h3 { color: var(--green); margin-bottom: 30px; font-size: 1.5rem; }
+        .footer-section p { color: var(--text-secondary); margin-bottom: 20px; }
+        .social-links { display: flex; gap: 15px; margin-top: 30px; }
+        .social-links a {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 50px; height: 50px;
+            background: var(--card-bg);
+            border-radius: 50%;
+            transition: var(--transition);
+            border: 2px solid var(--card-border);
+        }
+        .social-links a:hover { background: var(--gradient-red); transform: translateY(-5px); border-color: var(--dark-red); }
+        .copyright {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--card-border);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* === Coach Selector === */
+        .coach-selector-section {
+            padding: 60px 0 30px;
+        }
+        .coaches-selector-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .coach-select-btn {
+            background: var(--gradient-dark);
+            border: 2px solid var(--card-border);
+            color: var(--text-secondary);
+            padding: 20px 10px;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 700;
+            font-size: 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .coach-select-btn:before {
+            content: '';
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 0;
+            background: var(--gradient-red);
+            transition: var(--transition);
+        }
+        .coach-select-btn:hover { border-color: var(--dark-red); color: white; transform: translateY(-5px); }
+        .coach-select-btn:hover:before { height: 100%; }
+        .coach-select-btn.active { background: var(--gradient-red); color: white; border-color: var(--dark-red); }
+        .coach-select-btn img {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 12px;
+            display: block;
+            border: 3px solid var(--card-border);
+            transition: var(--transition);
+            position: relative;
+            z-index: 1;
+        }
+        .coach-select-btn .btn-name { position: relative; z-index: 1; display: block; }
+        .coach-select-btn:hover img, .coach-select-btn.active img { border-color: var(--green); }
+
+        /* === Profile Header Banner === */
+        .profile-hero {
+            background: linear-gradient(135deg, rgba(6,71,51,0.85) 0%, rgba(64,180,47,0.4) 100%),
+                        url('https://i.ibb.co/bRG72sFy/Screenshot-2026-05-19-130337.jpg');
+            background-size: cover;
+            background-position: center;
+            padding: 80px 0 60px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 60px;
+            border-radius: var(--radius);
+        }
+        .profile-hero:before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: var(--gradient-red);
+            opacity: 0.08;
+        }
+        .profile-hero-inner {
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            position: relative;
+            z-index: 2;
+        }
+        .profile-avatar-wrap {
+            flex-shrink: 0;
+            position: relative;
+        }
+        .profile-avatar {
+            width: 200px; height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 6px solid var(--dark-red);
+            box-shadow: 0 0 50px rgba(64,180,47,0.4), var(--shadow);
+            display: block;
+            background: var(--card-bg);
+        }
+        .profile-avatar-ring {
+            position: absolute;
+            top: -8px; left: -8px; right: -8px; bottom: -8px;
+            border-radius: 50%;
+            border: 3px solid var(--green);
+            opacity: 0.5;
+            animation: rotateRing 6s linear infinite;
+        }
+        @keyframes rotateRing {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .profile-hero-info { flex: 1; }
+        .profile-coach-number {
+            display: inline-block;
+            background: var(--gradient-green);
+            color: white;
+            padding: 8px 22px;
+            border-radius: var(--radius-sm);
+            font-weight: 800;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+        .profile-coach-name {
+            font-size: 4rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, #fff, var(--green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            line-height: 1.1;
+        }
+        .profile-coach-name-en {
+            font-size: 1.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: block;
+        }
+        .profile-tags { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 15px; }
+        .profile-tag {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--text-secondary);
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .profile-tag i { color: var(--green); }
+
+        /* === Profile Stats Bar === */
+        .profile-quick-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 60px;
+        }
+        .quick-stat {
+            text-align: center;
+            padding: 30px 20px;
+        }
+        .quick-stat-num {
+            font-size: 3rem;
+            font-weight: 900;
+            color: var(--green);
+            margin-bottom: 8px;
+            text-shadow: 0 5px 15px rgba(255,120,5,0.3);
+        }
+        .quick-stat-label { font-size: 1rem; color: var(--text-secondary); }
+
+        /* === Achievements Grid === */
+        .achievements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .achievement-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 25px;
+            background: var(--gradient-dark);
+            border: 2px solid var(--card-border);
+            border-radius: var(--radius);
+            transition: var(--transition);
+        }
+        .achievement-item:hover { border-color: var(--dark-red); transform: translateY(-5px); }
+        .achievement-icon {
+            width: 55px; height: 55px;
+            flex-shrink: 0;
+            background: var(--gradient-red);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.4rem;
+        }
+        .achievement-icon.gold { background: linear-gradient(135deg, #b8860b, #ffd700); }
+        .achievement-icon.silver { background: linear-gradient(135deg, #808080, #c0c0c0); }
+        .achievement-icon.bronze { background: linear-gradient(135deg, #8b4513, #cd853f); }
+        .achievement-text h4 { font-size: 1.1rem; margin-bottom: 5px; color: var(--text-primary); }
+        .achievement-text p { font-size: 0.95rem; color: var(--text-muted); margin: 0; }
+
+        /* === Season History Table === */
+        .season-table {
+            width: 100%;
+            border-collapse: collapse;
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        .season-table th {
+            background: var(--gradient-red);
+            color: white;
+            padding: 18px 20px;
+            text-align: right;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        body[lang="en"] .season-table th { text-align: left; }
+        .season-table td {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--card-border);
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            background: var(--card-bg);
+        }
+        .season-table tr:hover td { background: rgba(6,71,51,0.15); color: var(--text-primary); }
+        .season-table .champ-cell { color: gold; font-weight: 800; }
+        .season-table .runner-cell { color: var(--green); font-weight: 700; }
+        .badge-champ {
+            background: linear-gradient(135deg, #b8860b, #ffd700);
+            color: #000;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 800;
+        }
+        .badge-cup {
+            background: var(--gradient-green);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 800;
+        }
+        .badge-part {
+            background: var(--gradient-dark);
+            border: 1px solid var(--card-border);
+            color: var(--text-muted);
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+        }
+
+        /* === Bio Section === */
+        .bio-card { padding: 40px; }
+        .bio-text { font-size: 1.15rem; line-height: 2; color: var(--text-secondary); }
+
+        /* === No profile state === */
+        .no-profile {
+            text-align: center;
+            padding: 100px 20px;
+        }
+        .no-profile i { font-size: 5rem; color: var(--dark-red); margin-bottom: 30px; display: block; }
+        #profileContent { display: none; }
+
+        /* === Scrollbar === */
+        ::-webkit-scrollbar { width: 12px; }
+        ::-webkit-scrollbar-track { background: var(--darker-bg); }
+        ::-webkit-scrollbar-thumb { background: var(--gradient-red); border-radius: 6px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--dark-red-light); }
+
+        /* === Animations === */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-in { animation: fadeInUp 0.6s ease forwards; }
+
+        /* === Responsive === */
+        @media (max-width: 992px) {
+            nav {
+                position: fixed;
+                top: 120px;
+                right: -300px;
+                width: 300px;
+                height: calc(100vh - 120px);
+                background: var(--gradient-dark);
+                transition: var(--transition);
+                z-index: 999;
+                border-left: 2px solid var(--dark-red);
+                padding: 40px 20px;
+            }
+            nav.active { right: 0; }
+            body[lang="en"] nav { right: auto; left: -300px; }
+            body[lang="en"] nav.active { left: 0; }
+            nav ul { flex-direction: column; gap: 20px; }
+            .mobile-menu-btn { display: block; }
+            .profile-hero-inner { flex-direction: column; text-align: center; }
+            .profile-tags { justify-content: center; }
+        }
+        @media (max-width: 768px) {
+            .header-container { flex-wrap: wrap; gap: 20px; }
+            .logo { order: 1; }
+            .language-toggle { order: 2; margin-right: auto; }
+            .mobile-menu-btn { order: 3; }
+            .profile-coach-name { font-size: 2.5rem; }
+            .profile-avatar { width: 150px; height: 150px; }
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 2rem; }
+            .coaches-selector-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+            .season-table { font-size: 0.85rem; }
+            .season-table th, .season-table td { padding: 12px 10px; }
+        }
+        @media (max-width: 576px) {
+            .container { padding: 0 15px; }
+            .logo-img { width: 60px; height: 60px; }
+            .logo-text h1 { font-size: 1.4rem; }
+            .profile-coach-name { font-size: 2rem; }
+            .coaches-selector-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+            .coach-select-btn img { width: 60px; height: 60px; }
+        }
+
+        /* ===================================================
+           NEW BLOCKS: Top 4 Standings & Cup Final Details
+           =================================================== */
+
+        /* --- Shared sub-block wrapper --- */
+        .champ-sub-block {
+            margin-top: 28px;
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+            background: rgba(0,0,0,0.25);
+        }
+
+        .champ-sub-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 20px;
+            background: var(--gradient-red);
+            font-weight: 800;
+            font-size: 1rem;
+            color: #fff;
+            letter-spacing: 0.02em;
+        }
+
+        .champ-sub-header i {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* --- Top 4 standings table --- */
+        .top4-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .top4-table thead tr {
+            background: rgba(6,71,51,0.35);
+        }
+
+        .top4-table thead th {
+            padding: 11px 14px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-align: right;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--card-border);
+        }
+
+        body[lang="en"] .top4-table thead th { text-align: left; }
+
+        .top4-table tbody tr {
+            transition: background 0.25s;
+        }
+
+        .top4-table tbody tr:hover {
+            background: rgba(64,180,47,0.07);
+        }
+
+        .top4-table tbody td {
+            padding: 12px 14px;
+            font-size: 0.93rem;
+            color: var(--text-secondary);
+            border-bottom: 1px solid rgba(51,51,51,0.6);
+        }
+
+        .top4-table tbody tr:last-child td { border-bottom: none; }
+
+        /* Position badge */
+        .pos-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-weight: 900;
+            font-size: 0.9rem;
+        }
+
+        .pos-badge.pos-1 { background: linear-gradient(135deg,#b8860b,#ffd700); color:#000; }
+        .pos-badge.pos-2 { background: linear-gradient(135deg,#808080,#c0c0c0); color:#000; }
+        .pos-badge.pos-3 { background: linear-gradient(135deg,#8b4513,#cd853f); color:#fff; }
+        .pos-badge.pos-4 { background: var(--gradient-dark); border: 1px solid var(--card-border); color: var(--text-muted); }
+
+        .top4-coach-name {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .top4-team-name {
+            color: var(--green);
+            font-size: 0.88rem;
+        }
+
+        .top4-points {
+            font-weight: 800;
+            color: var(--green);
+            font-size: 1rem;
+        }
+
+        /* --- Cup Final block --- */
+        .cup-final-block {
+            padding: 18px 20px 10px;
+        }
+
+        .cup-final-matchup {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .cup-final-team {
+            flex: 1;
+            min-width: 130px;
+            text-align: center;
+            padding: 14px 10px;
+            background: rgba(6,71,51,0.18);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .cup-final-team:hover {
+            border-color: var(--dark-red);
+            background: rgba(6,71,51,0.30);
+        }
+
+        .cup-final-team-name {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .cup-final-coach-lbl {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 4px;
+        }
+
+        .cup-final-coach-name {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--green);
+        }
+
+        .cup-final-vs-col {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        .cup-final-score {
+            font-size: 1.7rem;
+            font-weight: 900;
+            background: var(--gradient-green);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+
+        .cup-final-vs-txt {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 700;
+            letter-spacing: 0.1em;
+        }
+
+        .cup-final-na {
+            padding: 18px;
+            text-align: center;
+            color: var(--text-muted);
+            font-style: italic;
+            font-size: 0.95rem;
+        }
+
+        @media (max-width: 576px) {
+            .cup-final-matchup { flex-direction: column; }
+            .cup-final-team { min-width: 100%; }
+            .cup-final-vs-col { flex-direction: row; gap: 14px; }
+        }
+
+        /* ===== MOBILE RESPONSIVE IMPROVEMENTS ===== */
+
+        /* Fix iOS background-attachment: fixed (causes blank on iOS Safari) */
+        @supports (-webkit-touch-callout: none) {
+            .page-header,
+            .hero-banner {
+                background-attachment: scroll;
+            }
+        }
+
+        /* Mobile nav overlay backdrop */
+        .nav-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 998;
+        }
+        .nav-overlay.active { display: block; }
+
+        @media (max-width: 992px) {
+            /* Ensure menu button is never covered */
+            .mobile-menu-btn {
+                z-index: 1100 !important;
+            }
+            /* Nav z-index below button */
+            #mainNav {
+                z-index: 1050 !important;
+                overflow-y: auto;
+            }
+            /* Prevent body scroll when menu open */
+            body.menu-open {
+                overflow: hidden;
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* Header */
+            .header-container {
+                padding: 12px 15px;
+                gap: 10px;
+            }
+            .logo-img {
+                width: 55px;
+                height: 55px;
+            }
+            .logo-text h1 {
+                font-size: 1.3rem;
+            }
+            .logo-text p {
+                font-size: 0.8rem;
+            }
+            .language-toggle {
+                margin-right: 0;
+                gap: 8px;
+            }
+            .lang-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 0.85rem;
+            }
+            .mobile-menu-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 1.3rem;
+            }
+
+            /* Main padding */
+            main {
+                padding-top: 100px;
+            }
+
+            /* Hero */
+            .hero-banner {
+                height: auto;
+                min-height: 380px;
+                padding: 60px 15px;
+                background-attachment: scroll;
+            }
+            .hero-content {
+                padding: 0 10px;
+            }
+            .hero-badge {
+                font-size: 0.95rem;
+                padding: 10px 18px;
+            }
+            .hero-content h1 {
+                font-size: 1.8rem !important;
+            }
+            .hero-content p {
+                font-size: 1rem;
+            }
+            .hero-content .btn {
+                font-size: 0.9rem;
+                padding: 12px 20px;
+                margin-top: 20px !important;
+                width: 100%;
+                text-align: center;
+            }
+
+            /* Countdown */
+            .season-countdown {
+                gap: 8px;
+            }
+            .time-box {
+                padding: 10px 12px;
+                min-width: 60px;
+            }
+            .time-box span {
+                font-size: 22px;
+            }
+
+            /* Page header */
+            .page-header {
+                padding: 70px 15px;
+                background-attachment: scroll;
+            }
+
+            /* Sections */
+            .section {
+                margin-bottom: 60px;
+            }
+            .section-title {
+                gap: 14px;
+                margin-bottom: 30px;
+                flex-wrap: wrap;
+            }
+            .title-icon {
+                width: 48px;
+                height: 48px;
+                font-size: 1.2rem;
+                flex-shrink: 0;
+            }
+
+            /* Cards */
+            .card {
+                padding: 22px 18px;
+            }
+
+            /* Stats */
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+                margin-top: 30px;
+            }
+            .stat-card {
+                padding: 25px 15px;
+            }
+            .stat-number {
+                font-size: 2.5rem;
+            }
+
+            /* Champions */
+            .champions-container {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            .champion-card {
+                padding: 35px 20px;
+            }
+            .champion-name {
+                font-size: 2rem;
+            }
+
+            /* Participants */
+            .participants-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 18px;
+            }
+            .participant-photo {
+                width: 100px;
+                height: 100px;
+            }
+            .participant-name {
+                font-size: 1.1rem;
+            }
+
+            /* Coaches grid */
+            .coaches-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 18px;
+            }
+
+            /* Matches / news */
+            .matches-container,
+            .news-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            .match-image,
+            .news-image {
+                height: 200px;
+            }
+            .match-content,
+            .news-content {
+                padding: 20px;
+            }
+
+            /* Season selector */
+            .season-selector {
+                gap: 10px;
+            }
+            .season-btn {
+                padding: 10px 16px;
+                min-width: 90px;
+                font-size: 0.9rem;
+            }
+
+            /* Overview image */
+            .overview-image {
+                border-radius: 10px;
+                margin: 25px auto;
+            }
+
+            /* Coach selector */
+            .coaches-selector-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 12px;
+            }
+            .coach-select-btn {
+                padding: 14px 8px;
+                font-size: 0.85rem;
+            }
+            .coach-select-btn img {
+                width: 60px;
+                height: 60px;
+            }
+
+            /* Profile hero */
+            .profile-hero {
+                padding: 40px 0 30px;
+                margin-bottom: 30px;
+            }
+            .profile-hero-inner {
+                flex-direction: column;
+                text-align: center;
+                gap: 25px;
+            }
+            .profile-avatar {
+                width: 130px;
+                height: 130px;
+            }
+            .profile-coach-name {
+                font-size: 2rem;
+            }
+            .profile-coach-name-en {
+                font-size: 1.3rem;
+            }
+            .profile-tags {
+                justify-content: center;
+                gap: 8px;
+            }
+            .profile-tag {
+                font-size: 0.85rem;
+                padding: 6px 14px;
+            }
+            .profile-quick-stats {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+                margin-bottom: 30px;
+            }
+            .quick-stat {
+                padding: 20px 12px;
+            }
+            .quick-stat-num {
+                font-size: 2.2rem;
+            }
+
+            /* Achievements */
+            .achievements-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            .achievement-item {
+                padding: 18px;
+                gap: 15px;
+            }
+
+            /* Season table */
+            .season-table {
+                font-size: 0.8rem;
+                display: block;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            .season-table th,
+            .season-table td {
+                padding: 10px 8px;
+                white-space: nowrap;
+            }
+
+            /* Footer */
+            footer {
+                padding: 50px 0 20px;
+                margin-top: 60px;
+            }
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                margin-bottom: 30px;
+            }
+
+            /* Top4 table */
+            .top4-table {
+                font-size: 0.8rem;
+            }
+            .top4-table thead th,
+            .top4-table tbody td {
+                padding: 10px 8px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo-text h1 {
+                font-size: 1.1rem;
+            }
+            h1 { font-size: 1.9rem; }
+            h2 { font-size: 1.6rem; }
+            h3 { font-size: 1.3rem; }
+
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .stat-number {
+                font-size: 2rem;
+            }
+
+            .coaches-selector-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+            .coach-select-btn img {
+                width: 52px;
+                height: 52px;
+            }
+            .coach-select-btn {
+                font-size: 0.78rem;
+                padding: 10px 5px;
+            }
+
+            .participants-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            .participant-photo {
+                width: 80px;
+                height: 80px;
+            }
+
+            .profile-avatar {
+                width: 110px;
+                height: 110px;
+            }
+            .profile-coach-name {
+                font-size: 1.7rem;
+            }
+            .profile-quick-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .quick-stat-num {
+                font-size: 1.8rem;
+            }
+
+            .hero-content h1 {
+                font-size: 1.5rem !important;
+            }
+            .hero-content p {
+                font-size: 0.95rem;
+            }
+            .time-box {
+                min-width: 52px;
+                padding: 8px 8px;
+            }
+            .time-box span {
+                font-size: 18px;
+            }
+        }
+
+</style>
+</head>
+<body lang="ar">
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">
+                <div class="logo-img">
+                    <i class="fas fa-trophy" style="font-size: 2.5rem;"></i>
+                </div>
+                <div class="logo-text">
+                    <h1>دوري المدرب الأفضل</h1>
+                    <p>OSM League - 2026</p>
+                </div>
+            </div>
+            
+            <div class="language-toggle">
+                <button class="lang-btn active" id="langAr">AR</button>
+                <button class="lang-btn" id="langEn">EN</button>
+            </div>
+            
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
+            <nav id="mainNav">
+                <ul>
+                    <li><a href="#overview" class="nav-link active" data-en="Overview" data-ar="نظرة عامة">نظرة عامة</a></li>
+                    <li><a href="#champions" class="nav-link" data-en="Champions" data-ar="الأبطال">الأبطال</a></li>
+                    <li><a href="#participants" class="nav-link" data-en="Participants" data-ar="المشاركون">المشاركون</a></li>
+                    <li><a href="#season10" class="nav-link" data-en="Season 11" data-ar="الموسم الحادي عشر">الموسم الحادي عشر</a></li>
+                    <li><a href="#matches" class="nav-link" data-en="Classicos" data-ar="المباريات الخاصة">المباريات الخاصة</a></li>
+                    <li><a href="#news" class="nav-link" data-en="News" data-ar="الأخبار">الأخبار</a></li>
+                    <li><a href="#coaches" class="nav-link" data-en="Coaches" data-ar="المدربون">المدربون</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <div class="nav-overlay" id="navOverlay"></div>
+    <main>
+        <!-- Hero Banner -->
+        <section class="hero-banner">
+            <div class="hero-content">
+                <div class="hero-badge" data-en="11th Season - Coming Soon" data-ar="الموسم الحادي عشر - باقي من الزمن">الموسم الحادي عشر - باقي من الزمن</div>
+                <div id="countdown" class="season-countdown">
+                    <div class="time-box">
+                        <span id="days">00</span>
+                        <small>يوم</small>
+                    </div>
+                    <div class="time-box">
+                        <span id="hours">00</span>
+                        <small>ساعة</small>
+                    </div>
+                    <div class="time-box">
+                        <span id="minutes">00</span>
+                        <small>دقيقة</small>
+                    </div>
+                    <div class="time-box">
+                        <span id="seconds">00</span>
+                        <small>ثانية</small>
+                    </div>
+                </div>
+                <h1 data-en="Best Manager League" data-ar="دوري المدرب الأفضل">دوري المدرب الأفضل</h1>
+                <p data-en="The ultimate competitive football management tournament on Online Soccer Manager" data-ar="أعلى بطولة إدارة كرة قدم تنافسية على لعبة Online Soccer Manager">أعلى بطولة إدارة كرة قدم تنافسية على لعبة Online Soccer Manager</p>
+                <a href="https://i.ibb.co/tPPxPBPY/COACHES-LIST-WILDCARDS.jpg" class="btn" style="margin-top: 40px;">
+                    <i class="fas fa-play-circle"></i>
+                    <span data-en="OSM League - SUMMER 2026 - Coaches List" data-ar="دوري المدرب الأفضل - صيف 2026 - لائحة المدربين">دوري المدرب الأفضل - صيف 2026 - لائحة المدربين</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- Overview Page -->
+        <section id="overview" class="page-section">
+            <div class="section">
+                <div class="section-title">
+                    <div class="title-icon">
+                        <i class="fas fa-list-ol"></i>
+                    </div>
+                    <h2 data-ar="الترتيب النهائي" data-en="Current Standings - Pre Season">
+                        الترتيب الحالي
+                    </h2>
+                </div>
+
+            <img 
+                src="https://i.ibb.co/v6rbyRrv/RANKING38.jpg"
+                alt="Best Manager League"
+                class="overview-image">
+
+            <div class="container">
+                <div class="section">
+                    <div class="section-title">
+                        <div class="title-icon">
+                            <i class="fas fa-info-circle"></i>
+                        </div>
+                        <h2 data-en="About The League" data-ar="عن الدوري">عن الدوري</h2>
+                    </div>
+                    
+                    <div class="card animate-in" style="animation-delay: 0.1s;">
+                        <h3 data-en="League Definition" data-ar="تعريف الدوري">تعريف الدوري</h3>
+                        <p data-en="The Best Manager League is a competitive football management tournament played on the Online Soccer Manager (OSM) platform. It brings together experienced and emerging coaches from different countries to compete over a full league season, combining tactical depth, long-term planning, and direct competition. The league is built on continuity, rivalry, and historical prestige, making every season part of an evolving competitive legacy." data-ar="بطولة المدرب الأفضل هي بطولة إدارة كرة قدم تنافسية تُلعب على منصة Online Soccer Manager (OSM). تجمع البطولة مدربين ذوي خبرة وآخرين ناشئين من دول مختلفة للتنافس خلال موسم دوري كامل، حيث تجمع بين العمق التكتيكي، التخطيط طويل الأمد، والمنافسة المباشرة. تُبنى البطولة على الاستمرارية، التنافس، والهيبة التاريخية، مما يجعل كل موسم جزءاً من إرث تنافسي متطور."></p>
+                    </div>
+                    
+                    <div class="card animate-in" style="animation-delay: 0.2s; margin-top: 30px;">
+                        <h3 data-en="Competition Format" data-ar="نظام المنافسة">نظام المنافسة</h3>
+                        <p data-en="The competition is played in a league format. To date, ten seasons have been completed. Nine seasons were played in the English league system, while one season took place in the Spanish league. Each season follows a full round-robin structure, where teams compete across multiple matchdays, with league standings determining the final rankings. Cup competitions run in parallel, adding an elimination-based challenge alongside the league race." data-ar="تُلعب المنافسة بنظام الدوري. حتى الآن، تم إكمال عشر مواسم مواسم. تسعة مواسم لُعبت في نظام الدوري الإنجليزي، بينما لعب موسم واحد في الدوري الإسباني. يتبع كل موسم نظام الدوري الكامل من دورين، حيث تتنافس الفرق عبر عدة جولات، مع تحديد الترتيب النهائي عبر جدول الدوري. تجري منافسات الكأس بالتوازي، مضيفة تحدياً قائماً على النظام الإقصائي بجانب سباق الدوري."></p>
+                    </div>
+                    
+                    <div class="card animate-in" style="animation-delay: 0.3s; margin-top: 30px;">
+                        <h3 data-en="Competition Period" data-ar="فترة المنافسة">فترة المنافسة</h3>
+                        <p data-en="Each season lasts approximately 47 days. In earlier editions, the league was organized at different periods throughout the year. However, following the cancellation of Season Nine, it was decided that the competition would be held once every year, specifically during the month of Ramadan, and the summer establishing a fixed and symbolic annual schedule for the league." data-ar="يدوم كل موسم حوالي 47 يوماً. في النسخ السابقة، نظم الدوري في فترات مختلفة على مدار السنة. ومع ذلك، بعد إلغاء الموسم التاسع، تقرر أن تُعقد البطولة مرتين كل سنة، تحديداً خلال شهر رمضان المبارك، وصيف كل سنة مما يثبت جدولاً سنوياً ثابتاً وذا رمزية للدوري."></p>
+                    </div>
+                </div>
+                
+                <!-- League Statistics -->
+                <div class="section">
+                    <div class="section-title">
+                        <div class="title-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <h2 data-en="League Statistics" data-ar="إحصائيات الدوري">إحصائيات الدوري</h2>
+                    </div>
+                    
+                    <div class="stats-container">
+                        <div class="card stat-card animate-in" style="animation-delay: 0.1s;">
+                            <div class="stat-number" id="totalSeasons">10</div>
+                            <div class="stat-label" data-en="Seasons Completed" data-ar="موسم مكتمل">موسم مكتمل</div>
+                        </div>
+                        
+                        <div class="card stat-card animate-in" style="animation-delay: 0.2s;">
+                            <div class="stat-number" id="currentSeason">11</div>
+                            <div class="stat-label" data-en="Next season" data-ar="الموسم القادم">الموسم القادم</div>
+                        </div>
+                        
+                        <div class="card stat-card animate-in" style="animation-delay: 0.3s;">
+                            <div class="stat-number" id="durationDays">47</div>
+                            <div class="stat-label" data-en="Days per Season" data-ar="يوم لكل موسم">يوم لكل موسم</div>
+                        </div>
+                        
+                        <div class="card stat-card animate-in" style="animation-delay: 0.4s;">
+                            <div class="stat-number" id="totalParticipants">15</div>
+                            <div class="stat-label" data-en="Season 11 Participants" data-ar="مشارك في الموسم 11">مشارك في الموسم 11</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Champions Archive Page -->
+        <section id="champions" class="page-section" style="display: none;">
+            <div class="container">
+                <div class="section">
+                    <div class="section-title">
+                        <div class="title-icon">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <h2 data-en="Champions Archive" data-ar="سجل الأبطال">سجل الأبطال</h2>
+                    </div>
+                    
+                    <p class="text-center" style="margin-bottom: 50px; font-size: 1.3rem;" data-en="Celebrating the league and cup champions throughout history" data-ar="نحتفي بأبطال الدوري والكأس عبر التاريخ">نحتفي بأبطال الدوري والكأس عبر التاريخ</p>
+                    
+                    <div class="season-selector" id="seasonSelector">
+                        <!-- Season buttons will be dynamically generated here -->
+                    </div>
+                    
+                    <div class="champions-container" id="championsContainer">
+                        <!-- Champion cards will be dynamically generated here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Participants Page -->
+        <section id="participants" class="page-section" style="display: none;">
+            <div class="container">
+                <div class="section">
+                    <div class="section-title">
+                        <div class="title-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h2 data-en="Season Participants" data-ar="مشاركو الموسم">مشاركو الموسم</h2>
+                    </div>
+                    
+                    <p class="text-center" style="margin-bottom: 50px; font-size: 1.3rem;" data-en="Coaches who have competed in each season of the league" data-ar="المدربون الذين تنافسوا في كل موسم من البطولة">المدربون الذين تنافسوا في كل موسم من البطولة</p>
+                    
+                    <div class="season-selector" id="participantsSeasonSelector">
+                        <!-- Season buttons for participants will be dynamically generated here -->
+                    </div>
+                    
+                    <div class="section">
+                        <h3 data-en="Participants for Season " data-ar="مشاركو الموسم " id="participantsSeasonTitle">مشاركو الموسم 1</h3>
+                        <div class="participants-grid" id="participantsGrid">
+                            <!-- Participant cards will be dynamically generated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Season 10 Page -->
+        <section id="season10" class="page-section" style="display: none;">
+            <div class="container">
+                <div class="section">
+                    <div class="section-title">
+                        <div class="title-icon">
+                            <i class="fas fa-futbol"></i>
+                        </div>
+                        <h2 data-en="Season 11 - Summer 2026" data-ar="الموسم الحادي عشر - صيف 2026">الموسم الحادي عشر - صيف 2026</h2>
+                    </div>
+                    
+                    <div class="card animate-in" style="animation-delay: 0.1s; margin-bottom: 50px;">
+                        <h3 data-en="The Upcoming Season" data-ar="الموسم القادم">الموسم القادم</h3>
+                        <p data-en="The organizing committee is preparing to host the 11th season of OSM League, scheduled to take place next summer. This page will be updated after the draw." data-ar="تستعد اللجنة المنظمة لتنظيم الموسم الحادي عشر من دوري المدرب الأفضل المقرر تنظيمه الصيف القادم. سيتم تحديث هذه الصفحة بعد القرعة."></p>
+                    </div>
+                    
+                    <div class="section">
+                        <h3 data-en="Season 11 Coaches & Teams" data-ar="مدربو وفرق الموسم الحادي عشر">مدربو وفرق الموسم الحادي عشر</h3>
+                        <p class="mb-30" data-en="Meet the coaches and their teams competing in the 11th OSM SEASON" data-ar="تعرف على المدربين وفرقهم المشاركة في النسخة احادية عشرة من دوري المدرب الأفضل">تعرف على المدربين وفرقهم المشاركة في النسخة العاشرة من بطولة المدرب الأفضل</p>
+                        
+                        <div class="coaches-grid" id="season10Coaches">
+                            <!-- Season 10 coaches will be dynamically generated here -->
+                        </div>
+                    </div>
+                    
+                    <div class="section" style="margin-top: 80px;">
+                        <h3 data-en="Key Matches" data-ar="المباريات الرئيسية">المباريات الرئيسية</h3>
+                        
+                        <div class="matches-container">
+                            <div class="card match-card animate-in" style="animation-delay: 0.1s;">
+                               <!-- <img src="https://i.ibb.co/1fmVg6cR/classico.jpg" alt="Classic Match" class="match-image"> -->
+                                <div class="match-content">
+                                    <span class="match-type" data-en="Classico" data-ar="الكلاسيكو">الكلاسيكو</span>
+                                    <h3 id="classicMatchName">أنيس × رجاوي</h3>
+                                    <p data-en="A historic rivalry that defines the competition" data-ar="منافسة تاريخية تحدد هوية البطولة">منافسة تاريخية تحدد هوية البطولة</p>
+                                    
+                                    <div class="match-teams">
+                                        <span id="classicTeam1">نوتينغهام فورست</span>
+                                        <span class="vs">VS</span>
+                                        <span id="classicTeam2">مانشستر سيتي</span>
+                                    </div>
+                                    
+                                    <div class="coach-info">
+                                        <p><strong data-en="Coaches:" data-ar="المدربون:">المدربون:</strong> <span id="classicMatchCoaches">أنيس × رجاوي</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="card match-card animate-in" style="animation-delay: 0.2s;">
+                               <!-- <img src="https://i.ibb.co/jZzB7FPG/derby.jpg" alt="Derby" class="match-image"> -->
+                                <div class="match-content">
+                                    <span class="match-type" data-en="Derby" data-ar="دربي">دربي</span>
+                                    <h3 id="derbyMatchName">أنيس × خالد</h3>
+                                    <p data-en="Intense local rivalry with high stakes" data-ar="منافسة محلية حادة ذات مخاطر عالية">منافسة محلية حادة ذات مخاطر عالية</p>
+                                    
+                                    <div class="match-teams">
+                                        <span id="derbyTeam1">نوتينغهام فورست</span>
+                                        <span class="vs">VS</span>
+                                        <span id="derbyTeam2">نيوكاسل يونايتد</span>
+                                    </div>
+                                    
+                                    <div class="coach-info">
+                                        <p><strong data-en="Coaches:" data-ar="المدربون:">المدربون:</strong> <span id="derbyMatchCoaches">أنيس × خالد</span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Special Matches Page -->
+        <section id="matches" class="page-section" style="display: none;">
+            <div class="container">
+                <div class="section">
+                    <div class="section-title">
+                        <div class="title-icon">
+                            <i class="fas fa-fire"></i>
+                        </div>
+                        <h2 data-en="Special Matches" data-ar="المباريات الخاصة">المباريات الخاصة</h2>
+                    </div>
+                    
+                    <p class="text-center" style="margin-bottom: 50px; font-size: 1.3rem;" data-en="Historic rivalries and classic encounters in the league" data-ar="منافسات تاريخية ومواجهات كلاسيكية في الدوري">منافسات تاريخية ومواجهات كلاسيكية في الدوري</p>
+                    
+                    <div class="matches-container" id="specialMatchesContainer">
+                        <!-- Special matches will be dynamically generated here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- News Page -->
+        <section id="news" class="page-section" style="display: none;">
+            <div class="container">
+                <div class="section">
+                    <div class="section-title">
+                        <div class="title-icon">
+                            <i class="fas fa-newspaper"></i>
+                        </div>
+                        <h2 data-en="League News" data-ar="أخبار البطولة">أخبار البطولة</h2>
+                    </div>
+                    
+                    <p class="text-center" style="margin-bottom: 50px; font-size: 1.3rem;" data-en="Latest updates, announcements and official statements" data-ar="أحدث التحديثات، الإعلانات والبيانات الرسمية">أحدث التحديثات، الإعلانات والبيانات الرسمية</p>
+                    
+                    <div class="news-grid" id="newsContainer">
+                        <!-- News cards will be dynamically generated here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    
+<!-- Coaches Section -->
+<section id="coaches" class="page-section" style="display: none;">
+    <div class="container">
+        
+            <section class="coach-selector-section section">
+                <div class="section-title">
+                    <div class="title-icon"><i class="fas fa-users-cog"></i></div>
+                    <h2 data-ar="اختر مدرباً" data-en="Select a Coach">اختر مدرباً</h2>
+                </div>
+                <p data-ar="اختر مدرباً لعرض ملفه الشخصي الكامل" data-en="Select a coach to view their full profile">اختر مدرباً لعرض ملفه الشخصي الكامل</p>
+                <div class="coaches-selector-grid" id="coachesSelectorGrid">
+                    <!-- populated by JS -->
+                </div>
+            </section>
+
+            <!-- No profile placeholder -->
+            <div id="noProfileMsg" class="no-profile">
+                <i class="fas fa-user-tie"></i>
+                <h2 data-ar="اختر مدرباً من القائمة أعلاه" data-en="Select a coach from the list above">اختر مدرباً من القائمة أعلاه</h2>
+                <p data-ar="سيتم عرض الملف الشخصي الكامل للمدرب هنا" data-en="The full coach profile will be displayed here">سيتم عرض الملف الشخصي الكامل للمدرب هنا</p>
+            </div>
+
+            <!-- Profile Content -->
+            <div id="profileContent">
+
+                <!-- Hero Banner -->
+                <section class="profile-hero animate-in">
+                    <div class="container">
+                        <div class="profile-hero-inner">
+                            <div class="profile-avatar-wrap">
+                                <img id="profileAvatar" src="" alt="" class="profile-avatar">
+                                <div class="profile-avatar-ring"></div>
+                            </div>
+                            <div class="profile-hero-info">
+                                <span class="profile-coach-number" id="profileBadge"></span>
+                                <div class="profile-coach-name" id="profileNameAr"></div>
+                                <span class="profile-coach-name-en" id="profileNameEn"></span>
+                                <div class="profile-tags" id="profileTags"></div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Quick Stats -->
+                <section class="section">
+                    <div class="profile-quick-stats" id="profileQuickStats"></div>
+                </section>
+
+                <!-- Biography -->
+                <section class="section">
+                    <div class="section-title">
+                        <div class="title-icon"><i class="fas fa-id-card"></i></div>
+                        <h2 data-ar="نبذة عن المدرب" data-en="Coach Biography">نبذة عن المدرب</h2>
+                    </div>
+                    <div class="card bio-card animate-in">
+                        <p class="bio-text" id="profileBio"></p>
+                    </div>
+                </section>
+
+                <!-- Achievements -->
+                <section class="section">
+                    <div class="section-title">
+                        <div class="title-icon"><i class="fas fa-medal"></i></div>
+                        <h2 data-ar="الإنجازات والألقاب" data-en="Achievements & Titles">الإنجازات والألقاب</h2>
+                    </div>
+                    <div class="achievements-grid" id="profileAchievements"></div>
+                </section>
+
+                <!-- Season History -->
+                <section class="section">
+                    <div class="section-title">
+                        <div class="title-icon"><i class="fas fa-history"></i></div>
+                        <h2 data-ar="تاريخ المشاركة في المواسم" data-en="Season Participation History">تاريخ المشاركة في المواسم</h2>
+                    </div>
+                    <div class="card" style="padding: 0; overflow: hidden;">
+                        <table class="season-table" id="profileSeasonTable">
+                            <thead>
+                                <tr>
+                                    <th data-ar="الموسم" data-en="Season">الموسم</th>
+                                    <th data-ar="التاريخ" data-en="Date">التاريخ</th>
+                                    <th data-ar="الإنجاز" data-en="Achievement">الإنجاز</th>
+                                    <th data-ar="ملاحظة" data-en="Note">ملاحظة</th>
+                                </tr>
+                            </thead>
+                            <tbody id="profileSeasonBody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Rivalry Section -->
+                <section class="section" id="rivalrySection" style="display:none;">
+                    <div class="section-title">
+                        <div class="title-icon"><i class="fas fa-fire"></i></div>
+                        <h2 data-ar="المنافسات الخاصة" data-en="Special Rivalries">المنافسات الخاصة</h2>
+                    </div>
+                    <div class="achievements-grid" id="profileRivalries"></div>
+                </section>
+
+            </div><!-- /profileContent -->
+        
+    </div>
+</section>
+
+</main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 data-en="Best Manager League" data-ar="دوري المدرب الأفضل">دوري المدرب الأفضل</h3>
+                    <p data-en="The premier competitive football management tournament on Online Soccer Manager (OSM). Bringing together coaches from different countries to compete in a full league season." data-ar="أبرز بطولة إدارة كرة قدم تنافسية على لعبة Online Soccer Manager (OSM). تجمع المدربين من دول مختلفة للتنافس في موسم دوري كامل."></p>
+                    
+                    <div class="social-links">
+                        <a href="https://www.youtube.com/@11thOSM"><i class="fa-brands fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 data-en="Quick Links" data-ar="روابط سريعة">روابط سريعة</h3>
+                    <ul style="list-style: none; font-size: 1.1rem;">
+                        <li><a href="https://osmleague.ddns.net/" class="footer-link" data-en="League Overview" data-ar="نظرة عامة" style="display: block; padding: 10px 0; border-bottom: 1px solid var(--card-border);">نظرة عامة</a></li>
+                        <li><a href="https://osmleague.ddns.net/docs/match_schedule.pdf" class="footer-link" data-en="Match Schedule" data-ar="جدول المباريات" style="display: block; padding: 10px 0; border-bottom: 1px solid var(--card-border);">جدول المباريات</a></li>
+                        <li><a href="https://i.ibb.co/FkXHbVc7/COACH-LIST-with-country.jpg" class="footer-link" data-en="Season 11 Coaches List" data-ar="لائحة مدربي الموسم الحادي عشر" style="display: block; padding: 10px 0; border-bottom: 1px solid var(--card-border);">الموسم الحادي عشر</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3 data-en="Contact Information" data-ar="معلومات الاتصال">معلومات الاتصال</h3>
+                    <p data-en="For inquiries about the league, participation, or partnerships:" data-ar="للاستفسارات حول البطولة، المشاركة، أو الشراكات:"></p>
+                    <p><i class="fas fa-envelope" style="color: var(--green); margin-left: 10px;"></i> Soon - قريبا</p>
+                    <p><i class="fas fa-globe" style="color: var(--green); margin-left: 10px;"></i> https://osmleague.ddns.net/</p>
+                </div>
+            </div>
+            
+            <div class="copyright">
+                <p data-en="&copy; 2026 Best Manager League (OSM). All rights reserved." data-ar="&copy; 2026 دوري المدرب الأفضل . جميع الحقوق محفوظة.">&copy; 2026 دوري المدرب الأفضل . جميع الحقوق محفوظة.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Participants images from web
+        const participantImages = {
+            "أنيس": "https://i.ibb.co/rGJFyW1p/ANIS.jpg",
+            "رجاوي": "https://i.ibb.co/JjzHYJsp/RAJAWI.jpg",
+            "مهند": "https://i.ibb.co/22wDwLy/MOHANED.jpg",
+            "خالد": "https://i.ibb.co/4bV3wjZ/KHALED.jpg",
+            "كارلو": "https://i.ibb.co/QF5c7fkH/CHARLO.jpg",
+            "فما حاجة": "https://i.ibb.co/Hf3c0QCD/FAMA-7-AJA.jpg",
+            "محمدو": "https://i.ibb.co/Xf7XKZVd/MUHAMADU.jpg",
+            "عبدالله": "https://i.ibb.co/tpY78RgQ/ABDELLAH.jpg",
+            "كنان": "https://i.ibb.co/xKCcmr1z/KENAN.jpg",
+            "أمين": "https://i.ibb.co/XZmbtbxx/AMINE.jpg",
+            "صلاح الدين": "https://i.ibb.co/gbtdSdXJ/SALAHEDDINE.jpg",
+            "رضا": "https://i.ibb.co/JhCXPHr/RIDA.jpg",
+            "مشري": "https://i.ibb.co/0pB9Q78y/MECHERI.jpg",
+            "سراج": "https://i.ibb.co/bjKKRbbW/SIRADJ.jpg",
+            "الباغر": "https://i.ibb.co/Z6NJLD2c/ALBAGER.jpg",
+            "رياض": "https://i.ibb.co/DHDcDS3F/RIYADH.jpg",
+            "زيد": "https://i.ibb.co/RpYZWmkP/ZAID.jpg",
+            "بامبو": "https://i.ibb.co/HDnBTtYT/BAMBOO.jpg",
+            "حاقو": "https://i.ibb.co/vxCM7SYy/HAKO.jpg",
+        };
+        // League database
+        const leagueData = {
+            "league": {
+                "name": "Best Manager League (OSM)",
+                "description": "بطولة المدرب الأفضل على لعبة OSM",
+                "format": "دوري + كأس",
+                "total_seasons_played": 10,
+                "current_season": 11,
+                "leagues_used": {
+                    "Premier League": 9,
+                    "La Liga": 1
+                },
+                "duration_days": 47,
+                "annual_schedule": "رمضان"
+            },
+            "seasons": {
+                "1": {
+                    "dates": {
+                        "start": "2022-11-12",
+                        "end": "2022-12-25"
+                    },
+                    "league_champion": "رجاوي",
+                    "cup_champion": "أنيس",
+                    "participants": [
+                        "أنيس",
+                        "رجاوي",
+                        "مهند",
+                        "خالد",
+                        "عبدالله"
+                    ]
+                },
+                "2": {
+                    "dates": {
+                        "start": "2022-12-27",
+                        "end": "2023-02-07"
+                    },
+                    "league_champion": "مهند",
+                    "cup_champion": "رجاوي",
+                    "participants": [
+                        "رجاوي",
+                        "مهند",
+                        "أنيس",
+                        "خالد",
+                        "عبدالله"
+                    ]
+                },
+                "3": {
+                    "dates": {
+                        "start": "2023-02-09",
+                        "end": "2023-04-02"
+                    },
+                    "league_champion": "رجاوي",
+                    "cup_champion": "خالد",
+                    "participants": [
+                        "رجاوي",
+                        "أنيس",
+                        "عبدالله",
+                        "خالد"
+                    ]
+                },
+                "4": {
+                    "dates": {
+                        "start": "2023-11-20",
+                        "end": "2024-01-01"
+                    },
+                    "league_champion": "أنيس",
+                    "cup_champion": "أنيس",
+                    "participants": [
+                        "رجاوي",
+                        "أنيس",
+                        "فما حاجة",
+                        "مهند",
+                        "خالد"
+                    ]
+                },
+                "5": {
+                    "dates": {
+                        "start": "2024-01-09",
+                        "end": "2024-02-24"
+                    },
+                    "league_champion": null,
+                    "cup_champion": "أنيس",
+                    "participants": [
+                        "رجاوي",
+                        "أنيس",
+                        "فما حاجة",
+                        "مهند",
+                        "خالد"
+                    ]
+                },
+                "6": {
+                    "dates": {
+                        "start": "2024-09-11",
+                        "end": "2024-10-27"
+                    },
+                    "league_champion": "أنيس",
+                    "cup_champion": "مهند",
+                    "participants": [
+                        "رجاوي",
+                        "أنيس",
+                        "فما حاجة",
+                        "مهند"
+                    ]
+                },
+                "7": {
+                    "dates": {
+                        "start": "2024-12-13",
+                        "end": "2025-01-28"
+                    },
+                    "league_champion": "أنيس",
+                    "cup_champion": "محمدو",
+                    "participants": [
+                        "رجاوي",
+                        "أنيس",
+                        "فما حاجة",
+                        "مهند",
+                        "خالد",
+                        "كنان",
+                        "عبدالله",
+                        "محمدو",
+                        "رياض",
+                        "رضا",
+                        "كارلو"
+                    ]
+                },
+                "8": {
+                    "dates": {
+                        "start": "2025-02-12",
+                        "end": "2025-03-30"
+                    },
+                    "league_champion": "كارلو",
+                    "cup_champion": "أنيس",
+                    "participants": [
+                        "رجاوي",
+                        "أنيس",
+                        "فما حاجة",
+                        "مهند",
+                        "كارلو",
+                        "كنان",
+                        "عبدالله",
+                        "محمدو",
+                        "أمين"
+                    ]
+                },
+                "9": {
+                    "dates": {
+                        "start": "2025-07-01",
+                        "end": "2025-07-15"
+                    },
+                    "status": "ملغى",
+                    "participants": [
+                        "رجاوي",
+                        "أنيس",
+                        "فما حاجة",
+                        "مهند",
+                        "كارلو",
+                        "الباغر"
+                    ]
+                },
+                "10": {
+                    "dates": {
+                        "start": "2026-02-01",
+                        "end": "2026-03-19"
+                    },
+                    "league_champion": "رجاوي",
+                    "cup_champion": "رجاوي",
+                    "participants": [
+                        "رجاوي",
+                        "أنيس",
+                        "فما حاجة",
+                        "مهند",
+                        "كارلو",
+                        "عبدالله",
+                        "كنان",
+                        "زيد",
+                        "أمين",
+                        "صلاح الدين",
+                        "محمدو",
+                        "خالد",
+                        "رضا",
+                        "سراج",
+                        "مشري"
+                    ],
+                    "classic_match": "أنيس × رجاوي",
+                    "derby": "أنيس × خالد"
+                },
+                "11": {
+                    "dates": {
+                        "start": "2026-07-10",
+                        "end": "2026-08-25"
+                    },
+                    "league_champion": "",
+                    "cup_champion": "",
+                    "participants": [
+                         "رجاوي",
+                         "أنيس",
+                         "مهند",
+                         "عبدالله",
+                         "كنان",
+                         "خالد",
+                         "كارلو",
+                         "أمين",
+                         "رضا",
+                         "مشري",
+                         "سراج",
+                         "فما حاجة",
+                         "حاقو",
+                         "بامبو",
+                         "الباغر"
+                    ],
+                    "classic_match": "أنيس × رجاوي",
+                    "derby": "أنيس × خالد"
+                }
+            }
+        };
+
+        // ============================================================
+        //  TOP 4 STANDINGS PER SEASON
+        //  Edit each season's array: { coach_ar, coach_en, team_ar, team_en, points }
+        //  To add a new season: duplicate a block and change the key.
+        // ============================================================
+        const top4StandingsData = {
+            "1": [
+                { pos: 1, coach_ar: "رجاوي",   coach_en: "RAJAWI",   team_ar: "مانشستر سيتي", team_en: "MANCHESTER CITY", points: "104" },
+                { pos: 2, coach_ar: "مهند",    coach_en: "MOHANED",  team_ar: "أرسنال", team_en: "ARSENAL", points: "96" },
+                { pos: 3, coach_ar: "بدون مدرب",    coach_en: "NO COACH",  team_ar: "نيوكاسل يونايتد", team_en: "NEWCASTLE UNITED", points: "94" },
+                { pos: 4, coach_ar: "أنيس",    coach_en: "ANIS",     team_ar: "ليستر سيتي", team_en: "LEICESTER CITY", points: "94" },
+            ],
+            "2": [
+                { pos: 1, coach_ar: "مهند",    coach_en: "MOHANED",  team_ar: "مانشستر يونايند", team_en: "MANCHESTER UNITED", points: "100" },
+                { pos: 2, coach_ar: "أنيس",   coach_en: "ANIS",   team_ar: "نيوكاسل يونايتد", team_en: "NEWCASTLE UNITED", points: "99" },
+                { pos: 3, coach_ar: "رجاوي",    coach_en: "RAJAWI",     team_ar: "ليفربول", team_en: "LIVERPOOL", points: "87" },
+                { pos: 4, coach_ar: "عبدالله",    coach_en: "ABDELLAH",   team_ar: "إيفرتون", team_en: "EVERTON", points: "85" }
+            ],
+            "3": [
+                { pos: 1, coach_ar: "رجاوي",   coach_en: "RAJAWI",   team_ar: "مانشستر سيتي", team_en: "MANCHESTER CITY", points: "105" },
+                { pos: 2, coach_ar: "أنيس",    coach_en: "ANIS",     team_ar: "تشيلسي", team_en: "CHELSEA", points: "101" },
+                { pos: 3, coach_ar: "خالد",    coach_en: "KHALED",   team_ar: "أرسنال", team_en: "ARSENAL", points: "96" },
+                { pos: 4, coach_ar: "بدون مدرب", coach_en: "NO COACH", team_ar: "ليستر سيتي", team_en: "LEICESTER CITY", points: "88" }
+            ],
+            "4": [
+                { pos: 1, coach_ar: "أنيس",    coach_en: "ANIS",     team_ar: "ليفربول", team_en: "LIVERPOOL", points: "110" },
+                { pos: 2, coach_ar: "رجاوي",   coach_en: "RAJAWI",   team_ar: "مانشستر يونايند", team_en: "MANCHESTER UNITED", points: "95" },
+                { pos: 3, coach_ar: "مهند",    coach_en: "MOHANED",  team_ar: "نيوكاسل يونايتد", team_en: "NEWCASTLE UNITED", points: "88" },
+                { pos: 4, coach_ar: "بدون مدرب", coach_en: "NO COACH",   team_ar: "أرسنال", team_en: "ARSENAL", points: "87" }
+            ],
+            "5": [
+                { pos: 1, coach_ar: "بدون مدرب", coach_en: "NO COACH",     team_ar: "ليفربول", team_en: "LIVERPOOL", points: "97" },
+                { pos: 2, coach_ar: "أنيس",   coach_en: "ANIS",   team_ar: "توتنهام", team_en: "TOTTENHAM HOTSPUR", points: "89" },
+                { pos: 3, coach_ar: "مهند",    coach_en: "MOHANED", team_ar: "تشيلسي", team_en: "CHELSEA", points: "80" },
+                { pos: 4, coach_ar: "رجاوي",   coach_en: "RAJAWI",   team_ar: "مانشستر سيتي", team_en: "MANCHESTER CITY", points: "77" }
+            ],
+            "6": [
+                { pos: 1, coach_ar: "أنيس",    coach_en: "Anis",     team_ar: "إشبيلية", team_en: "SEVILLA", points: "90" },
+                { pos: 2, coach_ar: "بدون مدرب", coach_en: "NO COACH",   team_ar: "ريال مدريد", team_en: "REAL MADRID", points: "88" },
+                { pos: 3, coach_ar: "مهند",    coach_en: "MOHANED",  team_ar: "ريال بيتيس", team_en: "REAL BETIS", points: "80" },
+                { pos: 4, coach_ar: "رجاوي",   coach_en: "Rajawi",   team_ar: "أتليتيك بلباو 'استقال'", team_en: "ATHLETIC BILBAO coach resigned", points: "75" }
+            ],
+            "7": [
+                { pos: 1, coach_ar: "أنيس",    coach_en: "ANIS",     team_ar: "توتنهام", team_en: "TOTTENHAM HOTSPUR", points: "101" },
+                { pos: 2, coach_ar: "رجاوي",    coach_en: "RAJAWI",     team_ar: "ليفربول", team_en: "LIVERPOOL", points: "96" },
+                { pos: 3, coach_ar: "مهند",    coach_en: "MOHANED",  team_ar: "نيوكاسل يونايتد", team_en: "NEWCASTLE UNITED", points: "96" },
+                { pos: 4, coach_ar: "محمدو",    coach_en: "MUHAMADU",  team_ar: "تشيلسي", team_en: "CHELSEA", points: "90" }
+            ],
+            "8": [
+                { pos: 1, coach_ar: "كارلو",   coach_en: "CHARLO",   team_ar: "نيوكاسل يونايتد", team_en: "NEWCASTLE UNITED", points: "101" },
+                { pos: 2, coach_ar: "رجاوي",    coach_en: "RAJAWI",     team_ar: "توتنهام", team_en: "TOTTENHAM HOTSPUR", points: "97" },
+                { pos: 3, coach_ar: "أنيس",    coach_en: "ANIS",     team_ar: "ليفربول", team_en: "LIVERPOOL", points: "95" },
+                { pos: 4, coach_ar: "مهند",    coach_en: "MOHANED",  team_ar: "أرسنال", team_en: "ARSENAL", points: "91" }
+            ],
+            "10": [
+                { pos: 1, coach_ar: "رجاوي",   coach_en: "RAJAWI",   team_ar: "مانشستر سيتي", team_en: "MANCHESTER CITY", points: "98" },
+                { pos: 2, coach_ar: "رضا",    coach_en: "RIDA",     team_ar: "بورنموث", team_en: "BOURNEMOUTH", points: "92" },
+                { pos: 3, coach_ar: "كنان",   coach_en: "KENAN",   team_ar: "برايتون", team_en: "BRIGHTON", points: "90" },
+                { pos: 4, coach_ar: "مهند",    coach_en: "MOHANED",  team_ar: "توتنهام", team_en: "TOTTENHAM HOTSPUR", points: "88" }
+            ],
+        };
+
+        // ============================================================
+        //  CUP FINAL DETAILS PER SEASON
+        //  Edit each season's object fields as needed.
+        //  To add a new season: duplicate a block and change the key.
+        // ============================================================
+        const cupFinalData = {
+            "1": {
+                team1_ar: "إيفرتون", team1_en: "EVERTON",
+                coach1_ar: "عبدالله",   coach1_en: "ABDELLAH",
+                team2_ar: "ليستر سيتي", team2_en: "LEICESTER CITY",
+                coach2_ar: "أنيس",    coach2_en: "Anis",
+                score: "2-0"
+            },
+            "2": {
+                team1_ar: "إيفرتون", team1_en: "EVERTON",
+                coach1_ar: "عبدالله",   coach1_en: "ABDELLAH",
+                team2_ar: "ليفربول", team2_en: "LIVERPOOL",
+                coach2_ar: "رجاوي",    coach2_en: "RAJAWI",
+                score: "2-0"
+            },
+            "3": {
+                team1_ar: "أرسنال", team1_en: "ARSENAL",
+                coach1_ar: "خالد",    coach1_en: "Khaled",
+                team2_ar: "مانشستر سيتي", team2_en: "MANCHESTER CITY",
+                coach2_ar: "رجاوي",   coach2_en: "RAJAWI",
+                score: "0-1"
+            },
+            "4": {
+                team1_ar: "ليفربول", team1_en: "LIVERPOOL",
+                coach1_ar: "أنيس",    coach1_en: "ANIS",
+                team2_ar: "مانشستر يونايتد", team2_en: "MANCHESTER UNITED",
+                coach2_ar: "رجاوي",   coach2_en: "RAJAWI",
+                score: "0-3"
+            },
+            "5": {
+                team1_ar: "ليفربول", team1_en: "LIVERPOOL",
+                coach1_ar: "بدون مدرب",    coach1_en: "NO COACH",
+                team2_ar: "توتنهام", team2_en: "TOTTENHAM HOTSPUR",
+                coach2_ar: "أنيس",   coach2_en: "ANIS",
+                score: "1-0"
+            },
+            "6": {
+                team1_ar: "برشلونة", team1_en: "BARCELONA",
+                coach1_ar: "بدون مدرب",    coach1_en: "NO COACH",
+                team2_ar: "ريال بيتيس", team2_en: "REAL BETIS",
+                coach2_ar: "مهند",    coach2_en: "Mohaned",
+                score: "3-2"
+            },
+            "7": {
+                team1_ar: "تشيلسي", team1_en: "CHELSEA",
+                coach1_ar: "محمدو",   coach1_en: "MUHAMADU",
+                team2_ar: "ويستهام يونايتد", team2_en: "WEST HAM UNITED",
+                coach2_ar: "فما حاجة",    coach2_en: "FAMA 7AJA",
+                score: "2-3"
+            },
+            "8": {
+                team1_ar: "ليفربول", team1_en: "LIVERPOOL",
+                coach1_ar: "أنيس",    coach1_en: "ANIS",
+                team2_ar: "توتنهام", team2_en: "TOTTENHAM HOTSPUR",
+                coach2_ar: "رجاوي",   coach2_en: "RAJAWI",
+                score: "2 (4)-(3) 2"
+            },
+            "10": {
+                team1_ar: "برايتون", team1_en: "BRIGHTON",
+                coach1_ar: "كنان",   coach1_en: "KENAN",
+                team2_ar: "مانشستر سيتي", team2_en: "MANCHESTER CITY",
+                coach2_ar: "رجاوي",   coach2_en: "RAJAWI",
+                score: "3-1"
+            }
+        };
+
+        // Teams and coaches mapping - FOR SEASON 10 ONLY
+        const teamsCoachesSeason11 = {
+            "أنيس": "",
+            "رجاوي": "",
+            "مهند": "",
+            "خالد": "",
+            "كارلو": "",
+            "فما حاجة": "",
+            "عبدالله": "",
+            "كنان": "",
+            "أمين": "",
+            "حاقو": "",
+            "رضا": "",
+            "مشري": "",
+            "سراج": "",
+            "بامبو": ""
+        };
+
+        // Coach images via URLs (easy to edit)
+        const coachImages = {
+            "أنيس": "",
+            "رجاوي": "",
+            "مهند": "",
+            "خالد": "",
+            "كارلو": "",
+            "فما حاجة": "",
+            "محمدو": "",
+            "عبدالله": "",
+            "كنان": "",
+            "أمين": "",
+            "صلاح الدين": "",
+            "رضا": "",
+            "مشري": "",
+            "سراج": "",
+            "زيد": ""
+        };
+
+        // Teams and coaches mapping in English - FOR SEASON 10 ONLY
+        const teamsCoachesSeason11EN = {
+            "ANIS": "",
+            "RAJAWI": "",
+            "MOHANED": "",
+            "KHALED": "",
+            "CHARLO": "",
+            "FAMA 7AJA": "",
+            "ABDELLAH": "",
+            "KENAN": "",
+            "AMINE": "",
+            "HAKO": "",
+            "RIDA": "",
+            "MECHERI": "",
+            "SIRADJ": "",
+            "BAMBOO": ""
+        };
+
+        // Special matches data
+        const specialMatchesData = [
+            {
+                id: 1,
+                type_en: "Classico",
+                type_ar: "الكلاسيكو",
+                name_ar: "أنيس × رجاوي",
+                name_en: "ANIS × RAJAWI",
+                description_en: "The most iconic rivalry in Best Manager League history. These two coaches have faced each other in multiple finals and decisive matches, creating unforgettable moments.",
+                description_ar: "أكثر المنافسات شهرة في تاريخ بطولة المدرب الأفضل. واجه هذان المدربان بعضهما في عدة نهائيات ومباريات حاسمة، مما خلق لحظات لا تُنسى.",
+                image: "https://i.ibb.co/fYmgZkyB/classico-2.jpg",
+                teams_en: ".",
+                teams_ar: "."
+            },
+            {
+                id: 2,
+                type_en: "Derby",
+                type_ar: "دربي",
+                name_ar: "أنيس × خالد",
+                name_en: "ANIS × KHALED",
+                description_en: "A fierce local rivalry with high stakes. Both coaches are known for their tactical battles and close matches that often go down to the wire.",
+                description_ar: "منافسة محلية شرسة ذات مخاطر عالية. يشتهر كلا المدربين بمعاركهما التكتيكية ومبارياتهما المتقاربة التي غالباً ما تصل إلى النهاية.",
+                image: "https://i.ibb.co/9xmYP4Y/derby-1.jpg",
+                teams_en: ".",
+                teams_ar: "."
+            },
+            {
+                id: 3,
+                type_en: "Derby Levant",
+                type_ar: "ديربي الشام",
+                name_ar: "كنان × رضا",
+                name_en: "KENAN × RIDA",
+                description_en: "A great showdown brings together top coaches from the Levant.",
+                description_ar: "مواجهة عظيمة تجمع بين كبار المدربين من بلاد الشام.",
+                image: "https://i.ibb.co/9HVfGBkt/LEVANT.jpg",
+                teams_en: ".",
+                teams_ar: "."
+            }
+        ];
+
+        // News data
+        const newsData = [
+            {
+                id: 24,
+                title_en: "",
+                title_ar: "الإعلان عن قرعة الموسم الحادي عشر",
+                date: "2026-5-05",
+                image: "https://i.ibb.co/r2VctnYv/draw.jpg",
+                excerpt_en: "",
+                excerpt_ar: "تجرى قرعة الموسم الحادي عشر من دوري المدرب الأفضل - صيف 2026 يوم الأربعاء 10 يونيو 2026 مباشرة عبر قناة الدوري على اليوتيوب"
+            },
+            {
+                id: 23,
+                title_en: "",
+                title_ar: "SL PRODUCTION - شركاء النجاح",
+                date: "2026-5-01",
+                image: "https://i.ibb.co/TBMBf1tJ/sponsor.jpg",
+                excerpt_en: "",
+                excerpt_ar: "يسعدنا الإعلان عن تعاوننا مع SL PRODUCTION.<br>شباب مبدعين سيتكلفون بإدارة الدوري ورعايته وإدارة الموقع الرسمي و التصاميم والإعلانات والقرعة وغيرهم الكثير.<br>نتمنى لهم التوفيق."
+            },
+            {
+                id: 22,
+                title_en: "",
+                title_ar: "الموسم الحادي عشر من دوري المدرب الأفضل - صيف 2026",
+                date: "2026-5-01",
+                image: "https://i.ibb.co/rfQ37yC7/poster-1.jpg",
+                excerpt_en: "",
+                excerpt_ar: "باسم الله الرحمن الرحيم والصلاة والسلام على رسول الله<br><br>بحول الله الموسم الحادي عشر من دوري المدرب الأفضل - صيف 2026<br>موسم جديد 🤩 خليك حديد 💪<br><br>ونسأل الله التوفيق."
+            },
+            {
+                id: 21,
+                title_en: "",
+                title_ar: "استعدوا...للصدمة الكبرى",
+                date: "2026-4-20",
+                image: "https://i.ibb.co/tpsDnjRm/pre-poster11.jpg",
+                excerpt_en: "",
+                excerpt_ar: "باسم الله الرحمن الرحيم والصلاة والسلام على رسول الله<br><br>قريبا .. جاري التحميل<br>إستعدوا.. ⏳️ للصدمة الكبرى 💥<br><br>ونسأل الله التوفيق."
+            },
+            {
+                id: 20,
+                title_en: "",
+                title_ar: "نهاية الموسم العاشر",
+                date: "2026-3-19",
+                image: "https://i.ibb.co/s9WHv0qQ/last.jpg",
+                excerpt_en: "",
+                excerpt_ar: "وانتهى دوري المدرب الأفضل في موسمه العاشر ، موسم عشنا فيه كل أنواع الحماس و المتعة والضغط ، موسم هو الأكبر تاريخيا بدون منازع ، وصل فيها كل مدرب لقمة آدائه. كان هذا كل شيء لهذا الموسم ونلتقي في موسم قادم ان شاء الله.<br>عيد سعيد."
+            },
+            {
+                id: 19,
+                title_en: "",
+                title_ar: "تم الإعلان عن جوائز الموسم العاشر",
+                date: "2026-3-19",
+                image: "https://i.ibb.co/MxshyDqp/image.jpg",
+                excerpt_en: "",
+                excerpt_ar: "مدرب الموسم : رجاوي / لاعب الموسم : فالفيردي / الحذاء الذهبي : لامين يامال / أفضل هجوم : مانشستر سيتي / أفضل دفاع : مانشستر سيتي / أفضل فريق : مانشستر سيتي / مفاجئة الموسم : بورنموث - برايتون"
+            },
+            {
+                id: 18,
+                title_en: "",
+                title_ar: "رجاوي بطل كأس انجلترا",
+                date: "2026-3-17",
+                image: "https://i.ibb.co/Q7BWX3qq/image.jpg",
+                excerpt_en: "",
+                excerpt_ar: "حقق المدرب رجاوي لقب كأس انجلترا بعد فوزه على كنان - برايتون ب 3 أهداف مقابل هدف ليحقق لقبه الثاني في المنافسة."
+            },
+            {
+                id: 17,
+                title_en: "",
+                title_ar: "رجاوي بطل الدوري",
+                date: "2026-3-16",
+                image: "https://i.ibb.co/m5V4NKQ2/image.jpg",
+                excerpt_en: "",
+                excerpt_ar: "حسنم نادي مانشستر سيتي تحت قيادة المدرب رجاوي لقب الدوري الانجليزي بعد الفوز الليلة على فولهام ، وبالتالي يصبح رجاوي أكثر مدرب فاز بالدوري مناصفة مع أنيس ب3 مرات."
+            },
+            {
+                id: 16,
+                title_en: "Bournemouth, First Half Champion",
+                title_ar: "بورنموث بطل فترة الذهاب",
+                date: "2026-2-25",
+                image: "https://i.ibb.co/G4jGvLw4/1ST-LEG.jpg",
+                excerpt_en: "Bournemouth crowned First Half Champions after finishing top at the end of the first half of the season.",
+                excerpt_ar: "بورنموث يتوج بجائزة بطل فترة الذهاب من الدوري بعد إنهائه في المركز الأول."
+            },
+            {
+                id: 15,
+                title_en: "KENAN, Brighton & Hove Albion Coach, Named Coach of the Week",
+                title_ar: "كنان مدرب برايتون مدرب الأسبوع",
+                date: "2026-2-25",
+                image: "https://i.ibb.co/0VKtQS1b/motw3.jpg",
+                excerpt_en: "Coach Kenan, manager of Brighton & Hove Albion, has been named Coach of the Third Week following his team's impressive performances during this period, achieving positive results and continuing the strong competition in the league.",
+                excerpt_ar: "المدرب كنان مدرب برايتون يتوج بجائزة مدرب الأسبوع الثالث بعد الأداء المميز الذي قدمه فريقه خلال هذه الفترة، حيث تمكن من تحقيق نتائج إيجابية ومواصلة المنافسة بقوة في الدوري."
+            },
+            {
+                id: 14,
+                title_en: "RAJAWI, Manchester city Coach, Named Coach of the Week",
+                title_ar: "رجاوي مدرب مانشستر سيتي مدرب الأسبوع",
+                date: "2026-2-18",
+                image: "https://i.ibb.co/0pwnVs9d/motw2.jpg",
+                excerpt_en: "Coach Rajawi, manager of Manchester City, has been named Coach of the Second Week following his team's impressive performances during this period, achieving positive results and continuing the strong competition in the league.",
+                excerpt_ar: "المدرب رجاوي مدرب مانشستر سيتي يتوج بجائزة مدرب الأسبوع الثاني بعد الأداء المميز الذي قدمه فريقه خلال هذه الفترة، حيث تمكن من تحقيق نتائج إيجابية ومواصلة المنافسة بقوة في الدوري."
+            },
+            {
+                id: 13,
+                title_en: "Anis Ends the Derby with Minimal Damage",
+                title_ar: "أنيس ينهي ديربي الغضب بأقل الأضرار",
+                date: "2026-2-11",
+                image: "https://i.ibb.co/xq7J6dp1/DERBY2.jpg",
+                excerpt_en: "Anis secured a 2–1 victory over Khaled in the “Derby of Anger” after a tactically closed and tightly contested match, which Anis managed to win thanks to his vast experience.",
+                excerpt_ar: "فاز أنيس على حساب خالد (التقرير) في ديربي الغضب بنتيجة 2-1 بعد مباراة مغلقة تكتيكيا فاز بها أنيس بفضل خبرته الكبيرة."
+            },
+            {
+                id: 12,
+                title_en: "Rida, Bournemouth Coach, Named Coach of the Week",
+                title_ar: "رضا مدرب بورنموث مدرب الأسبوع",
+                date: "2026-2-11",
+                image: "https://i.ibb.co/WvJX0m9P/motw-1.jpg",
+                excerpt_en: "Rida, head coach of Bournemouth, has been awarded the Coach of the Week prize for the period from 04/02/2026 to 11/02/2026 after leading his team to the top of the league standings, outperforming all competitors. In the same context, the award for the second week will be presented next Wednesday.",
+                excerpt_ar: "توج رضا مدرب بورنموث بجائزة مدرب الأسبوع للفترة ما بين 04/02/2026 حتى 11/02/2026 وذلك بعد قيادته فريق بونموث لاحتلال صدارة الدوري متفوقا على الجميع ، وفي نفس السياق ستمنح الجائزة الخاصة بالأسبوع الثاني يوم الأربعاء القادم."
+            },
+            {
+                id: 11,
+                title_en: "Rajawi Decides Clasico No. 16",
+                title_ar: "رجاوي يحسم الكلاسيكو رقم 16",
+                date: "2026-2-10",
+                image: "https://i.ibb.co/Psj3MzXw/image.jpg",
+                excerpt_en: "Manchester City, under the leadership of coach Rajawi, won the league clasico against Nottingham, led by coach Anis, with a 3–0 victory.",
+                excerpt_ar: " فاز مانشستر سيتي تحت قيادة المدرب رجاوي بكلاسيكو الدوري أمام نوتينغهام تحت قيادة المدرب أنيس بـ3-0."
+            },
+            {
+                id: 10,
+                title_en: "Announcement of the Kick-off Time for the Tenth Season",
+                title_ar: "الإعلان على توقيت انطلاق الموسم العاشر",
+                date: "2026-1-22",
+                image: "https://i.ibb.co/xNR3s4M/MATCH-start.jpg",
+                excerpt_en: "The organizing committee announces the date and time for the start of the pre-season of the 10th OSM Season – Ramadan 2026. The launch is scheduled for Sunday, February 1st, 2026, at 8:00 PM (UTC), with the first official matches set to take place on February 5th, 2026.",
+                excerpt_ar: "تعلن اللجنة المنظمة عن موعد وتوقيت انطلاق الموسم التحضيري من الموسم العاشر لدوري المدرب الأفضل - رمضان 2026. بحيث سينطلق يوم الأحد 1 فبراير 2026 الساعة الثامنة بالتوقيت العالمي، على ان تنطلق أولى مباريات الموسم في الخامس من نفس الشهر."
+            },
+            {
+                id: 9,
+                title_en: "10th OSM Season Match Schedule",
+                title_ar: "جدول مباريات الموسم العاشر",
+                date: "2026-1-16",
+                image: "https://i.ibb.co/JWSYstYN/MATCH.jpg",
+                excerpt_en: "Today, the official match schedule for the first leg of Season 10 has been announced.",
+                excerpt_ar: "تم اليوم الاعلان عن الجدول الرسمي للمباريات الخاصة بفترة الذهاب من الموسم العاشر."
+            },
+            {
+                id: 5,
+                title_en: "Salaheddine: The trophy is mine",
+                title_ar: "صلاح الدين : الكأس لي.",
+                date: "2026-1-9",
+                image: "https://i.ibb.co/ZRygnWHD/SALAHEDDINE.jpg",
+                excerpt_en: "Salaheddine, the new participant in the 10th OSM Season, stated that the league will be very tough, but he is confident of winning the trophy with Aston Villa.",
+                excerpt_ar: "صرح صلاح الدين المشارك الجديد في الموسم العاشر بأن الدوري سيكون صعب جدا لكنه واثق من الفوز بالكأس مع استون فيلا."
+            },
+            {
+                id: 4,
+                title_en: "Charlo Aims to Defend League Title",
+                title_ar: "كارلو يهدف للدفاع عن لقب الدوري",
+                date: "2026-01-02",
+                image: "https://i.ibb.co/BVXtbM7v/CHARLO.jpg",
+                excerpt_en: "Reigning league champion Charlo aims to defend his title in the upcoming Season 10 of the Best Manager League against strong competition.",
+                excerpt_ar: "بطل الدوري الحالي كارلو يهدف للدفاع عن لقبه في الموسم العاشر القادم من بطولة المدرب الأفضل أمام منافسة قوية."
+            },
+            {
+                id: 2,
+                title_en: "Record 15 Coaches for Season 10",
+                title_ar: "رقم قياسي بـ 15 مدرباً في الموسم العاشر",
+                date: "2025-12-31",
+                image: "https://i.ibb.co/BK6y3gMd/image.jpg",
+                excerpt_en: "Season 10 will feature a record-breaking 15 coaches, making it the largest and most competitive edition in the league's history.",
+                excerpt_ar: "سيضم الموسم العاشر رقماً قياسياً بـ 15 مدرباً، مما يجعله أكبر وأكثر نسخة تنافسية في تاريخ البطولة."
+            },
+            {
+                id: 3,
+                title_en: "New Wildcards !",
+                title_ar: "بطائق دعوة جديدة",
+                date: "2025-12-29",
+                image: "https://i.ibb.co/Pvy4fNn7/WILD.jpg",
+                excerpt_en: "This season, new faces from Algeria join the league through wildcard entries, namely Mecheri and Siradj.",
+                excerpt_ar: "ينضم لنا هذا الموسم وجوه جديدة من الجزائر ويتعلق الأمر بكل من مشري و سراج عن طريق بطائق الدعوة."
+            },
+            {
+                id: 1,
+                title_en: "Season 10 Official Schedule Released",
+                title_ar: "الإعلان الرسمي عن جدول الموسم العاشر",
+                date: "2025-12-18",
+                image: "https://i.ibb.co/Kz0bXGX2/image.jpg",
+                excerpt_en: "The official schedule for Season 10 has been released. The season will begin on February 1, 2026, and conclude on March 19, 2026, spanning the entire month of Ramadan.",
+                excerpt_ar: "تم الإعلان عن الجدول الرسمي للموسم العاشر. سيبدأ الموسم في 1 فبراير 2026 وينتهي في 19 مارس 2026، ليمتد على طول شهر رمضان المبارك."
+            },
+            {
+                id: 6,
+                title_en: "10 OSM Season Logo Announcement",
+                title_ar: "الإعلان عن شعار الموسم العاشر",
+                date: "2025-11-15",
+                image: "https://i.ibb.co/sJCBFtWK/OF-LOGO.jpg",
+                excerpt_en: "Today, the official logo of 10 OSM Season – Ramadan 2026 is revealed. The chosen design style is inspired by North African culture across the Maghreb region, while also aligning with the league’s overall atmosphere, symbolized by the English League Cup trophy.",
+                excerpt_ar: "يُعلن اليوم عن الشعار الجديد للموسم العاشر من دوري المدرب الأفضل - رمضان 2026 ، وتم اختيار هذا النمط في التصميم المستوحى من الثقافة الشمال افريقية لدول المغرب العربي وكذلك تماشيا مع الأجواء العامة للدوري المتمثلة في لقب كأس الدوري الانجليزي."
+            },
+            {
+                id: 7,
+                title_en: "10 OSM Season Draw Announcement",
+                title_ar: "الإعلان عن قرعة الموسم العاشر",
+                date: "2025-11-6",
+                image: "https://i.ibb.co/ZsxmHRB/DR.jpg",
+                excerpt_en: "The league’s organizing committee announces that the draw for the 10 OSM Season – Ramadan 2026 will take place on Thursday, January 1, 2026, live on the league’s official YouTube channel.",
+                excerpt_ar: "تعلن اللجنة المنظمة للدوري عن إجراء قرعة الموسم العاشر من دوري المدرب الأفضل - رمضان 2026 يوم الخميس 1 يناير 2026 مباشرة على القناة الرسمية للدوري في اليوتيوب."
+            },
+            {
+                id: 8,
+                title_en: "9th OSM Season termination",
+                title_ar: "إنهاء الموسم التاسع",
+                date: "2025-7-15",
+                image: "https://i.ibb.co/s9Pg4htM/9TH.jpg",
+                excerpt_en: "The organizing committee announces the cancellation and early termination of the 9th OSM Season – Summer 2025, due to a lack of competition, a limited number of coaches, and the withdrawal of some participants. The league will return with a new, bigger, and more exciting season in the upcoming Ramadan.",
+                excerpt_ar: "تعلن اللجنة المنظمة عن إلغاء و إنهاء الموسم التاسع من دوري المدرب الأفضل - صيف 2025 وذلك بسبب قلة المنافسة والمدربين واستقالة البعض منهم ، على أن نعود في موسم جديد أكبر و أمتع في رمضان القادم."
+            }
+        ];
+
+        // Current language
+        let currentLang = 'ar';
+
+        // DOM Elements
+        const pageSections = document.querySelectorAll('.page-section');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mainNav = document.getElementById('mainNav');
+        const langEnBtn = document.getElementById('langEn');
+        const langArBtn = document.getElementById('langAr');
+        const body = document.body;
+
+        // Initialize the website
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set initial statistics
+            document.getElementById('totalSeasons').textContent = leagueData.league.total_seasons_played;
+            document.getElementById('currentSeason').textContent = leagueData.league.current_season;
+            document.getElementById('durationDays').textContent = leagueData.league.duration_days;
+            document.getElementById('totalParticipants').textContent = leagueData.seasons["11"].participants.length;
+
+            // Initialize all pages
+            initChampionsPage();
+            initParticipantsPage();
+            initSeason10Page();
+            initSpecialMatchesPage();
+            initNewsPage();
+            
+            // Set up event listeners
+            setupEventListeners();
+            
+            // Apply Arabic language initially
+            applyLanguage('ar');
+            
+            // Add animation to elements on scroll
+            initScrollAnimations();
+        });
+
+        // Initialize champions page
+        function initChampionsPage() {
+            const seasonSelector = document.getElementById('seasonSelector');
+            const championsContainer = document.getElementById('championsContainer');
+            
+            seasonSelector.innerHTML = '';
+            
+            // Create season buttons
+            for (let i = 1; i <= leagueData.league.total_seasons_played; i++) {
+                const seasonBtn = document.createElement('button');
+                seasonBtn.className = i === 1 ? 'season-btn active' : 'season-btn';
+                seasonBtn.innerHTML = `<span data-en="Season ${i}" data-ar="الموسم ${i}">الموسم ${i}</span>`;
+                seasonBtn.dataset.season = i;
+                seasonBtn.addEventListener('click', function() {
+                    // Update active button
+                    document.querySelectorAll('#seasonSelector .season-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // Display champions for selected season
+                    displayChampionsForSeason(i);
+                });
+                seasonSelector.appendChild(seasonBtn);
+            }
+            
+            // Display champions for season 1 initially
+            displayChampionsForSeason(1);
+        }
+
+        // Display champions for a specific season
+        function displayChampionsForSeason(seasonNum) {
+            const championsContainer = document.getElementById('championsContainer');
+            const season = leagueData.seasons[seasonNum];
+            
+            championsContainer.innerHTML = '';
+            
+            // ── League champion card ──────────────────────────────
+            const leagueCard = document.createElement('div');
+            leagueCard.className = 'card champion-card animate-in';
+            
+            const leagueChampion = season.league_champion || (currentLang === 'ar' ? 'لم يتم منحه' : 'Not Awarded');
+            const leagueChampionName = currentLang === 'ar' ? leagueChampion : translateNameToEnglish(leagueChampion);
+            
+            // Build Top 4 standings block for this season
+            const top4Season = top4StandingsData[String(seasonNum)];
+            let top4HTML = '';
+            if (top4Season && top4Season.length > 0) {
+                const colPos   = currentLang === 'ar' ? 'المركز'  : 'Pos';
+                const colTeam  = currentLang === 'ar' ? 'الفريق'  : 'Team';
+                const colCoach = currentLang === 'ar' ? 'المدرب'  : 'Coach';
+                const colPts   = currentLang === 'ar' ? 'النقاط'  : 'Pts';
+                const blockTitle = currentLang === 'ar' ? 'ترتيب المواسم - أفضل 4' : 'Season Standings – Top 4';
+
+                const rows = top4Season.map(r => {
+                    const coachName = currentLang === 'ar' ? r.coach_ar : r.coach_en;
+                    const teamName  = currentLang === 'ar' ? r.team_ar  : r.team_en;
+                    const pts       = r.points !== '' && r.points !== null ? r.points : '—';
+                    const teamDisp  = teamName  !== '' && teamName  !== null ? teamName  : '—';
+                    return `
+                        <tr>
+                            <td><span class="pos-badge pos-${r.pos}">${r.pos}</span></td>
+                            <td>
+                                <div class="top4-coach-name">${coachName}</div>
+                                <div class="top4-team-name">${teamDisp}</div>
+                            </td>
+                            <td class="top4-points">${pts}</td>
+                        </tr>`;
+                }).join('');
+
+                top4HTML = `
+                    <div class="champ-sub-block">
+                        <div class="champ-sub-header">
+                            <i class="fas fa-list-ol"></i>
+                            <span>${blockTitle}</span>
+                        </div>
+                        <table class="top4-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:50px">${colPos}</th>
+                                    <th>${colTeam} / ${colCoach}</th>
+                                    <th style="width:60px">${colPts}</th>
+                                </tr>
+                            </thead>
+                            <tbody>${rows}</tbody>
+                        </table>
+                    </div>`;
+            }
+
+            leagueCard.innerHTML = `
+                <div class="trophy-icon"><i class="fas fa-trophy"></i></div>
+                <h3 data-en="League Champion" data-ar="بطل الدوري">بطل الدوري</h3>
+                <div class="champion-name">${leagueChampionName}</div>
+                <div class="champion-season" data-en="Season ${seasonNum}" data-ar="الموسم ${seasonNum}">الموسم ${seasonNum}</div>
+                <p>${formatDate(season.dates.start, currentLang)} - ${formatDate(season.dates.end, currentLang)}</p>
+                ${top4HTML}
+            `;
+            
+            championsContainer.appendChild(leagueCard);
+            
+            // ── Cup champion card ─────────────────────────────────
+            const cupCard = document.createElement('div');
+            cupCard.className = 'card champion-card animate-in';
+            cupCard.style.animationDelay = '0.2s';
+            
+            const cupChampion = season.cup_champion || (currentLang === 'ar' ? 'لم يتم منحه' : 'Not Awarded');
+            const cupChampionName = currentLang === 'ar' ? cupChampion : translateNameToEnglish(cupChampion);
+
+            // Build Cup Final block for this season
+            const finalData = cupFinalData[String(seasonNum)];
+            let cupFinalHTML = '';
+            if (finalData) {
+                const blockTitle  = currentLang === 'ar' ? 'تفاصيل نهائي الكأس' : 'Cup Final Details';
+                const coachLbl    = currentLang === 'ar' ? 'المدرب' : 'Coach';
+                const scoreLbl    = currentLang === 'ar' ? 'النتيجة' : 'Score';
+
+                const t1Name  = (currentLang === 'ar' ? finalData.team1_ar  : finalData.team1_en)  || '—';
+                const t1Coach = (currentLang === 'ar' ? finalData.coach1_ar : finalData.coach1_en) || '—';
+                const t2Name  = (currentLang === 'ar' ? finalData.team2_ar  : finalData.team2_en)  || '—';
+                const t2Coach = (currentLang === 'ar' ? finalData.coach2_ar : finalData.coach2_en) || '—';
+                const score   = finalData.score || '— : —';
+
+                cupFinalHTML = `
+                    <div class="champ-sub-block">
+                        <div class="champ-sub-header">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>${blockTitle}</span>
+                        </div>
+                        <div class="cup-final-block">
+                            <div class="cup-final-matchup">
+                                <div class="cup-final-team">
+                                    <div class="cup-final-team-name">${t1Name}</div>
+                                    <div class="cup-final-coach-lbl">${coachLbl}</div>
+                                    <div class="cup-final-coach-name">${t1Coach}</div>
+                                </div>
+                                <div class="cup-final-vs-col">
+                                    <div class="cup-final-score">${score}</div>
+                                    <div class="cup-final-vs-txt">VS</div>
+                                </div>
+                                <div class="cup-final-team">
+                                    <div class="cup-final-team-name">${t2Name}</div>
+                                    <div class="cup-final-coach-lbl">${coachLbl}</div>
+                                    <div class="cup-final-coach-name">${t2Coach}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>`;
+            } else {
+                const notAvail = currentLang === 'ar' ? 'لا تتوفر تفاصيل النهائي لهذا الموسم' : 'Cup final details not available for this season.';
+                cupFinalHTML = `
+                    <div class="champ-sub-block">
+                        <div class="champ-sub-header">
+                            <i class="fas fa-shield-alt"></i>
+                            <span>${currentLang === 'ar' ? 'تفاصيل نهائي الكأس' : 'Cup Final Details'}</span>
+                        </div>
+                        <div class="cup-final-na">${notAvail}</div>
+                    </div>`;
+            }
+            
+            cupCard.innerHTML = `
+                <div class="trophy-icon"><i class="fa-solid fa-crown"></i></div>
+                <h3 data-en="Cup Champion" data-ar="بطل الكأس">بطل الكأس</h3>
+                <div class="champion-name">${cupChampionName}</div>
+                <div class="champion-season" data-en="Season ${seasonNum}" data-ar="الموسم ${seasonNum}">الموسم ${seasonNum}</div>
+                <p>${formatDate(season.dates.start, currentLang)} - ${formatDate(season.dates.end, currentLang)}</p>
+                ${cupFinalHTML}
+            `;
+            
+            championsContainer.appendChild(cupCard);
+            
+            // Apply language to new content
+            applyLanguageToElement(championsContainer);
+        }
+
+        // Initialize participants page
+        function initParticipantsPage() {
+            const participantsSeasonSelector = document.getElementById('participantsSeasonSelector');
+            
+            participantsSeasonSelector.innerHTML = '';
+            
+            // Create season buttons
+            for (let i = 1; i <= leagueData.league.current_season; i++) {
+                const seasonBtn = document.createElement('button');
+                seasonBtn.className = i === 1 ? 'season-btn active' : 'season-btn';
+                seasonBtn.innerHTML = `<span data-en="Season ${i}" data-ar="الموسم ${i}">الموسم ${i}</span>`;
+                seasonBtn.dataset.season = i;
+                seasonBtn.addEventListener('click', function() {
+                    // Update active button
+                    document.querySelectorAll('#participantsSeasonSelector .season-btn').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // Display participants for selected season
+                    displayParticipantsForSeason(i);
+                });
+                participantsSeasonSelector.appendChild(seasonBtn);
+            }
+            
+            // Display participants for season 1 initially
+            displayParticipantsForSeason(1);
+        }
+
+        // Display participants for a specific season
+        function displayParticipantsForSeason(seasonNum) {
+            const participantsGrid = document.getElementById('participantsGrid');
+            const participantsSeasonTitle = document.getElementById('participantsSeasonTitle');
+            const season = leagueData.seasons[seasonNum];
+            
+            // Update title
+            if (currentLang === 'en') {
+                participantsSeasonTitle.textContent = `Participants for Season ${seasonNum}`;
+            } else {
+                participantsSeasonTitle.textContent = `مشاركو الموسم ${seasonNum}`;
+            }
+            
+            participantsGrid.innerHTML = '';
+            
+            // Create participant cards
+            season.participants.forEach((participant, index) => {
+                const participantCard = document.createElement('div');
+                participantCard.className = 'card participant-card animate-in';
+                participantCard.style.animationDelay = `${0.1 + index * 0.05}s`;
+                
+                const participantName = currentLang === 'ar' ? participant : translateNameToEnglish(participant);
+                const participantPhoto = participantImages[participantName]
+                   || `https://ui-avatars.com/api/?name=${encodeURIComponent(participantName)}&background=800000&color=fff&size=140&bold=true&font-size=0.5`;
+                
+                // Only show team for season 10
+                let teamHTML = '';
+                if (seasonNum === 11) {
+                    const teamName = currentLang === 'ar' 
+                        ? teamsCoachesSeason11[participant] || ''
+                        : getEnglishTeamForCoach(participant);
+                    
+                    if (teamName) {
+                        teamHTML = `<div class="participant-team">${teamName}</div>`;
+                    }
+                }
+                
+                participantCard.innerHTML = `
+                    <img src="${participantPhoto}" alt="${participantName}" class="participant-photo">
+                    <div class="participant-name">${participantName}</div>
+                    ${teamHTML}
+                `;
+                
+                participantsGrid.appendChild(participantCard);
+            });
+        }
+
+        // Initialize season 10 page
+        function initSeason10Page() {
+            const season10Coaches = document.getElementById('season10Coaches');
+            const season = leagueData.seasons["11"];
+            
+            season10Coaches.innerHTML = '';
+            
+            // Create coach cards for season 11
+            season.participants.forEach((participant, index) => {
+                const coachCard = document.createElement('div');
+                coachCard.className = 'card coach-card animate-in';
+                coachCard.style.animationDelay = `${0.1 + index * 0.05}s`;
+                
+                const coachName = currentLang === 'ar' ? participant : translateNameToEnglish(participant);
+                const teamName = currentLang === 'ar' 
+                    ? teamsCoachesSeason11[participant] || ''
+                    : getEnglishTeamForCoach(participant);
+                
+                const teamCode = getTeamCodeForCoach(participant);
+                const coachPhoto = coachImages[participant]
+                 || `https://ui-avatars.com/api/?name=${encodeURIComponent(coachName)}&background=0ec76a&color=fff&size=140&bold=true`;
+
+                
+                coachCard.innerHTML = `
+                    <img src="${coachPhoto}" alt="${coachName}" class="participant-photo">
+                    <div class="participant-name">${coachName}</div>
+                    <div class="team-logo">${teamCode}</div>
+                    <div class="team-name">${teamName}</div>
+                `;
+                
+                season10Coaches.appendChild(coachCard);
+            });
+            
+            // Set special matches
+            document.getElementById('classicMatchName').textContent = season.classic_match;
+            document.getElementById('derbyMatchName').textContent = season.derby;
+            
+            // Set team names for special matches
+            const classicMatchCoaches = season.classic_match.split(' × ');
+            const derbyMatchCoaches = season.derby.split(' × ');
+            
+            const classicTeam1 = currentLang === 'ar' 
+                ? teamsCoachesSeason11[classicMatchCoaches[0].trim()] 
+                : getEnglishTeamForCoach(classicMatchCoaches[0].trim());
+            
+            const classicTeam2 = currentLang === 'ar' 
+                ? teamsCoachesSeason11[classicMatchCoaches[1].trim()] 
+                : getEnglishTeamForCoach(classicMatchCoaches[1].trim());
+            
+            const derbyTeam1 = currentLang === 'ar' 
+                ? teamsCoachesSeason11[derbyMatchCoaches[0].trim()] 
+                : getEnglishTeamForCoach(derbyMatchCoaches[0].trim());
+            
+            const derbyTeam2 = currentLang === 'ar' 
+                ? teamsCoachesSeason11[derbyMatchCoaches[1].trim()] 
+                : getEnglishTeamForCoach(derbyMatchCoaches[1].trim());
+            
+            document.getElementById('classicTeam1').textContent = classicTeam1;
+            document.getElementById('classicTeam2').textContent = classicTeam2;
+            document.getElementById('derbyTeam1').textContent = derbyTeam1;
+            document.getElementById('derbyTeam2').textContent = derbyTeam2;
+            
+            document.getElementById('classicMatchCoaches').textContent = season.classic_match;
+            document.getElementById('derbyMatchCoaches').textContent = season.derby;
+        }
+
+        // Initialize special matches page
+        function initSpecialMatchesPage() {
+            const specialMatchesContainer = document.getElementById('specialMatchesContainer');
+            
+            specialMatchesContainer.innerHTML = '';
+            
+            // Create special match cards
+            specialMatchesData.forEach((match, index) => {
+                const matchCard = document.createElement('div');
+                matchCard.className = 'card match-card animate-in';
+                matchCard.style.animationDelay = `${0.1 + index * 0.2}s`;
+                
+                const matchType = currentLang === 'en' ? match.type_en : match.type_ar;
+                const matchName = currentLang === 'en' ? match.name_en : match.name_ar;
+                const matchDescription = currentLang === 'en' ? match.description_en : match.description_ar;
+                const matchTeams = currentLang === 'en' ? match.teams_en : match.teams_ar;
+                
+                matchCard.innerHTML = `
+                    <img src="${match.image}" alt="${matchName}" class="match-image">
+                    <div class="match-content">
+                        <span class="match-type">${matchType}</span>
+                        <h3>${matchName}</h3>
+                        <p>${matchDescription}</p>
+                        
+                        <div class="match-teams">
+                            <span>${matchTeams.split(' ضد ')[0] || matchTeams.split(' vs ')[0]}</span>
+                            <span class="vs">VS</span>
+                            <span>${matchTeams.split(' ضد ')[1] || matchTeams.split(' vs ')[1]}</span>
+                        </div>
+                    </div>
+                `;
+                
+                specialMatchesContainer.appendChild(matchCard);
+            });
+        }
+
+        // Initialize news page
+        function initNewsPage() {
+            const newsContainer = document.getElementById('newsContainer');
+            
+            newsContainer.innerHTML = '';
+            
+            // Create news cards
+            newsData.forEach((news, index) => {
+                const newsCard = document.createElement('div');
+                newsCard.className = 'card news-card animate-in';
+                newsCard.style.animationDelay = `${0.1 + index * 0.15}s`;
+                
+                const newsTitle = currentLang === 'en' ? news.title_en : news.title_ar;
+                const newsExcerpt = currentLang === 'en' ? news.excerpt_en : news.excerpt_ar;
+                const formattedDate = formatDate(news.date, currentLang);
+                
+                newsCard.innerHTML = `
+                    <img src="${news.image}" alt="${newsTitle}" class="news-image">
+                    <div class="news-content">
+                        <div class="news-date"><i class="far fa-calendar"></i> ${formattedDate}</div>
+                        <h3 class="news-title">${newsTitle}</h3>
+                        <p>${newsExcerpt}</p>
+                    </div>
+                `;
+                
+                newsContainer.appendChild(newsCard);
+            });
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Navigation links
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Get target section ID
+                    const targetId = this.getAttribute('href').substring(1);
+                    
+                    // Hide all sections
+                    pageSections.forEach(section => {
+                        section.style.display = 'none';
+                    });
+                    
+                    // Show target section
+                    document.getElementById(targetId).style.display = 'block';
+                    
+                    // Scroll to top of the section
+                    window.scrollTo({
+                        top: document.getElementById(targetId).offsetTop - 100,
+                        behavior: 'smooth'
+                    });
+                    
+                    // Update active nav link
+                    navLinks.forEach(navLink => {
+                        navLink.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    
+                    // Close mobile menu if open
+                    mainNav.classList.remove('active');
+                });
+            });
+            
+            // Mobile menu toggle
+            mobileMenuBtn.addEventListener('click', function() {
+                mainNav.classList.toggle('active');
+            });
+            
+            // Language toggle
+            langEnBtn.addEventListener('click', function() {
+                if (currentLang !== 'en') {
+                    applyLanguage('en');
+                    langEnBtn.classList.add('active');
+                    langArBtn.classList.remove('active');
+                    body.setAttribute('lang', 'en');
+                    body.setAttribute('dir', 'ltr');
+                }
+            });
+            
+            langArBtn.addEventListener('click', function() {
+                if (currentLang !== 'ar') {
+                    applyLanguage('ar');
+                    langArBtn.classList.add('active');
+                    langEnBtn.classList.remove('active');
+                    body.setAttribute('lang', 'ar');
+                    body.setAttribute('dir', 'rtl');
+                }
+            });
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(e) {
+                if (!mainNav.contains(e.target) && !mobileMenuBtn.contains(e.target) && mainNav.classList.contains('active')) {
+                    mainNav.classList.remove('active');
+                }
+            });
+        }
+
+        // Apply language to the entire page
+        function applyLanguage(lang) {
+            currentLang = lang;
+            
+            // Update all elements with data-en and data-ar attributes
+            document.querySelectorAll('[data-en]').forEach(element => {
+                if (lang === 'en') {
+                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        element.placeholder = element.getAttribute('data-en');
+                    } else {
+                        element.textContent = element.getAttribute('data-en');
+                    }
+                } else {
+                    if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+                        element.placeholder = element.getAttribute('data-ar');
+                    } else {
+                        element.textContent = element.getAttribute('data-ar');
+                    }
+                }
+            });
+            
+            // Update page titles and content
+            refreshDynamicContent();
+        }
+
+        // Apply language to a specific element and its children
+        function applyLanguageToElement(element) {
+            element.querySelectorAll('[data-en]').forEach(el => {
+                if (currentLang === 'en') {
+                    el.textContent = el.getAttribute('data-en');
+                } else {
+                    el.textContent = el.getAttribute('data-ar');
+                }
+            });
+        }
+
+        // Refresh dynamic content when language changes
+        function refreshDynamicContent() {
+            // Get current active season for champions page
+            const activeSeasonBtn = document.querySelector('#seasonSelector .season-btn.active');
+            if (activeSeasonBtn) {
+                const seasonNum = parseInt(activeSeasonBtn.dataset.season);
+                displayChampionsForSeason(seasonNum);
+            }
+            
+            // Get current active season for participants page
+            const activeParticipantsSeasonBtn = document.querySelector('#participantsSeasonSelector .season-btn.active');
+            if (activeParticipantsSeasonBtn) {
+                const seasonNum = parseInt(activeParticipantsSeasonBtn.dataset.season);
+                displayParticipantsForSeason(seasonNum);
+            }
+            
+            // Refresh season 10 page
+            initSeason10Page();
+            
+            // Refresh special matches page
+            initSpecialMatchesPage();
+            
+            // Refresh news page
+            initNewsPage();
+            
+            // Update footer links
+            applyLanguageToElement(document.querySelector('footer'));
+            
+            // Update navigation
+            applyLanguageToElement(document.querySelector('nav'));
+        }
+
+        // Helper function to translate Arabic names to English
+        function translateNameToEnglish(arabicName) {
+            const nameMap = {
+                "أنيس": "ANIS",
+                "رجاوي": "RAJAWI",
+                "مهند": "MOHANED",
+                "خالد": "KHALED",
+                "عبدالله": "ABDELLAH",
+                "فما حاجة": "FAMA 7AJA",
+                "كنان": "KENAN",
+                "محمدو": "MUHAMADU",
+                "رياض": "RIYAD",
+                "رضا": "RIDA",
+                "كارلو": "CHARLO",
+                "أمين": "AMINE",
+                "الباغر": "ALBAGER",
+                "زيد": "ZAID",
+                "صلاح الدين": "SALAHEDDINE",
+                "سراج": "SIRADJ",
+                "مشري": "MECHERI",
+                "حاقو": "HAKO",
+                "بامبو": "BAMBOO"
+            };
+            
+            return nameMap[arabicName] || arabicName;
+        }
+
+        // Helper function to get English team for a coach (Season 10 only)
+        function getEnglishTeamForCoach(coachName) {
+            const englishName = translateNameToEnglish(coachName);
+            return teamsCoachesSeason11EN[englishName] || "Unknown Team";
+        }
+
+        // Helper function to get team code for a coach
+        function getTeamCodeForCoach(coachName) {
+            const teamName = currentLang === 'ar' 
+                ? teamsCoachesSeason11[coachName] 
+                : getEnglishTeamForCoach(coachName);
+            
+            if (!teamName) return "TM";
+            
+            // Return first letter of each word in team name
+            return teamName.split(' ').map(word => word[0]).join('');
+        }
+
+        // Helper function to format dates
+        function formatDate(dateString, lang) {
+            const date = new Date(dateString);
+            
+            if (lang === 'en') {
+                return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            } else {
+                // Arabic date format
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                return date.toLocaleDateString('ar-MA', options);
+            }
+        }
+
+        // Initialize scroll animations
+        function initScrollAnimations() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate-in');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all cards and sections
+            document.querySelectorAll('.card, .section-title, h1, h2, h3').forEach(el => {
+                observer.observe(el);
+            });
+        }
+        // Season 10 countdown
+        const seasonStartDate = new Date("2026-07-10T21:00:00").getTime();
+        // ⬆️ عدّل التاريخ والساعة حسب موعد انطلاق الموسم
+
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = seasonStartDate - now;
+
+            if (distance < 0) {
+                document.getElementById("countdown").innerHTML =
+                    "<strong>11</strong>";
+                return;
+            }
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").textContent = days;
+            document.getElementById("hours").textContent = hours;
+            document.getElementById("minutes").textContent = minutes;
+            document.getElementById("seconds").textContent = seconds;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
+    </script>
+<script>
+
+// ============================================================
+//  LEAGUE DATABASE (mirrors main site)
+// ============================================================
+const leagueSeasons = {
+    "1":  { start:"2022-11-12", end:"2022-12-25",  league:"رجاوي",   cup:"أنيس",    participants:["أنيس","رجاوي","مهند","خالد","عبدالله"] },
+    "2":  { start:"2022-12-27", end:"2023-02-07",  league:"مهند",    cup:"رجاوي",   participants:["رجاوي","مهند","أنيس","خالد","عبدالله"] },
+    "3":  { start:"2023-02-09", end:"2023-04-02",  league:"رجاوي",   cup:"خالد",    participants:["رجاوي","أنيس","عبدالله","خالد"] },
+    "4":  { start:"2023-11-20", end:"2024-01-01",  league:"أنيس",    cup:"أنيس",    participants:["رجاوي","أنيس","فما حاجة","مهند","خالد"] },
+    "5":  { start:"2024-01-09", end:"2024-02-24",  league:null,      cup:"أنيس",    participants:["رجاوي","أنيس","فما حاجة","مهند","خالد"] },
+    "6":  { start:"2024-09-11", end:"2024-10-27",  league:"أنيس",    cup:"مهند",    participants:["رجاوي","أنيس","فما حاجة","مهند"] },
+    "7":  { start:"2024-12-13", end:"2025-01-28",  league:"أنيس",    cup:"محمدو",   participants:["رجاوي","أنيس","فما حاجة","مهند","خالد","كنان","عبدالله","محمدو","رياض","رضا","كارلو"] },
+    "8":  { start:"2025-02-12", end:"2025-03-30",  league:"كارلو",   cup:"أنيس",    participants:["رجاوي","أنيس","فما حاجة","مهند","كارلو","كنان","عبدالله","محمدو","أمين"] },
+    "9":  { start:"2025-07-01", end:"2025-07-15",  status:"ملغى",    participants:["رجاوي","أنيس","فما حاجة","مهند","كارلو","الباغر"] },
+    "10": { start:"2026-02-01", end:"2026-03-19",  league:"رجاوي",   cup:"رجاوي",   participants:["رجاوي","أنيس","فما حاجة","مهند","كارلو","عبدالله","كنان","زيد","أمين","صلاح الدين","محمدو","خالد","رضا","سراج","مشري"] },
+    "11": { start:"2026-07-10", end:"2026-08-25",  status:"قادم",   league:"",        cup:"",        participants:["رجاوي","أنيس","مهند","عبدالله","كنان","خالد","كارلو","أمين","رضا","مشري","سراج","فما حاجة","حاقو","بامبو","الباغر"] },
+};
+
+// Coach images
+
+// English name map
+const nameMapAR_EN = {
+    "أنيس": "ANIS", "رجاوي": "RAJAWI", "مهند": "MOHANED", "خالد": "KHALED",
+    "كارلو": "CHARLO", "فما حاجة": "FAMA 7AJA", "محمدو": "MUHAMADU",
+    "عبدالله": "ABDELLAH", "كنان": "KENAN", "أمين": "AMINE",
+    "صلاح الدين": "SALAHEDDINE", "رضا": "RIDA", "مشري": "MECHERI",
+    "سراج": "SIRADJ", "الباغر": "ALBAGHER", "رياض": "RIYAD",
+    "زيد": "ZAID", "بامبو": "BAMBOO", "حاقو": "HAKO"
+};
+
+// ============================================================
+//  COACH PROFILES DATABASE
+// ============================================================
+const coachProfiles = {
+    "أنيس": {
+        bio_ar: "أنيس هو أحد المؤسسين الأوائل لدوري المدرب الأفضل، وأحد أكثر المدربين تتويجاً في تاريخ البطولة. يتميز بأسلوب لعب هجومي جريء ومرونة تكتيكية عالية تجعله صعب المراس في كل المواسم. شارك في جميع المواسم تقريباً وأثبت دائماً أنه منافس حقيقي على اللقب. يُعتبر الكلاسيكو الذي يجمعه برجاوي من أكثر المواجهات إثارةً في تاريخ البطولة.",
+        bio_en: "Anis is one of the founding members of the Best Manager League and one of its most decorated coaches. Known for his bold attacking style and high tactical flexibility, he is a dangerous opponent in every season. Having participated in nearly every season, he has consistently proven himself a true title contender. The Clasico between him and Rajawi is widely considered the most exciting fixture in league history.",
+        country_ar: "الجزائر", country_en: "Algeria",
+        nationality_flag: "🇩🇿",
+        rivalries: [
+            { ar: "الكلاسيكو: أنيس × رجاوي", en: "Classico: ANIS × RAJAWI", icon: "fas fa-fire", desc_ar: "أشهر وأشرس منافسة في تاريخ الدوري", desc_en: "The most famous and fierce rivalry in league history" },
+            { ar: "ديربي الغضب: أنيس × خالد", en: "Derby of Anger: ANIS × KHALED", icon: "fas fa-bolt", desc_ar: "منافسة تكتيكية محلية حادة", desc_en: "A tense tactical local derby" }
+        ]
+    },
+    "رجاوي": {
+        bio_ar: "رجاوي هو المدرب الحالي الأكثر تتويجاً في تاريخ الدوري، إذ نجح في الفوز بالبطولة 3 مرات، مناصفةً مع أنيس. يتميز بقدرته الاستثنائية على التكيف مع الظروف وإدارة الفرق في المباريات الحاسمة. في الموسم العاشر، حقق الإنجاز التاريخي بالفوز بالدوري والكأس معاً في نفس الموسم. يُعتبر مدرباً استراتيجياً بامتياز، دائم الحضور في المراحل النهائية من البطولة.",
+        bio_en: "Rajawi is the current most decorated manager in league history, having won the championship 3 times — tied with Anis. Known for his exceptional adaptability and ability to manage teams in decisive matches. In Season 10, he achieved the historic double by winning both the league and the cup in the same season. He is considered a world-class strategist, always present in the final stages of the tournament.",
+        country_ar: "المغرب", country_en: "Morocco",
+        nationality_flag: "🇲🇦",
+        rivalries: [
+            { ar: "الكلاسيكو: رجاوي × أنيس", en: "Classico: RAJAWI × ANIS", icon: "fas fa-fire", desc_ar: "المواجهة الأيقونية في تاريخ البطولة", desc_en: "The iconic fixture in league history" }
+        ]
+    },
+    "مهند": {
+        bio_ar: "مهند هو أحد أبطال الدوري الأوائل، إذ حقق لقب الدوري في الموسم الثاني وكأس في الموسم السادس. يتميز بأسلوب لعب متوازن يجمع بين المتانة الدفاعية والفاعلية الهجومية. شارك في معظم مواسم البطولة وأثبت ثبات أدائه على مدى السنوات، مما يجعله أحد الأعمدة الأساسية لاستمرار الدوري.",
+        bio_en: "Mohaned is one of the league's earliest champions, having claimed the league title in Season 2 and a cup in Season 6. Known for a balanced playing style combining defensive solidity and attacking efficiency. He has participated in most league seasons and proven his consistent performance over the years, making him one of the pillars of the league's continuity.",
+        country_ar: "السودان", country_en: "Sudan",
+        nationality_flag: "🇸🇩",
+        rivalries: []
+    },
+    "خالد": {
+        bio_ar: "خالد هو صاحب لقب الكأس في الموسم الثالث، ويُعتبر من أكثر المدربين تطوراً على مدى المواسم. يعتمد على أسلوب تكتيكي دقيق يركز على الانضباط الدفاعي مع الاستغلال الجيد لفرص الهجوم المضاد. يجمعه بمدرب أنيس ديربي أنيس × خالد المعروف بالتوتر والإثارة في كل نسخة.",
+        bio_en: "Khaled is the cup champion of Season 3 and is considered one of the most tactically evolved coaches over the seasons. He relies on a precise tactical approach focused on defensive discipline and efficient use of counter-attacking opportunities. His Derby with Anis is known for its tension and excitement every edition.",
+        country_ar: "الجزائر", country_en: "Algeria",
+        nationality_flag: "🇩🇿",
+        rivalries: [
+            { ar: "ديربي: خالد × أنيس", en: "Derby: KHALED × ANIS", icon: "fas fa-bolt", desc_ar: "ديربي الغضب - منافسة محلية حادة", desc_en: "Derby of Anger - intense local rivalry" }
+        ]
+    },
+    "كارلو": {
+        bio_ar: "كارلو هو بطل الدوري في الموسم الثامن، وأحد المدربين الأكثر تأثيراً في تاريخ البطولة في مرحلة التوسع. يتميز بأسلوب مدروس ومتحكم في إيقاع المباراة، ويعرف كيف يستغل نقاط ضعف المنافسين. انضم للبطولة في الموسم السابع وسرعان ما أثبت جدارته بالتتويج في موسمه الثاني.",
+        bio_en: "Charlo is the league champion of Season 8 and one of the most impactful coaches in the league's expansion era. Known for a calculated style that controls the match tempo and exploits opponents' weaknesses. He joined the league in Season 7 and quickly proved his worth by winning the title in only his second season.",
+        country_ar: "المغرب", country_en: "Morocco",
+        nationality_flag: "🇲🇦",
+        rivalries: []
+    },
+    "فما حاجة": {
+        bio_ar: "فما حاجة هو أحد المشاركين الأكثر حضوراً في تاريخ الدوري، إذ شارك في معظم المواسم منذ الموسم الرابع. يتميز بروح تنافسية عالية وأسلوب لعب إبداعي يصعب التنبؤ به. يُعتبر من أكثر المدربين إثارةً للمتعة التنافسية رغم غياب اللقب الكبير عن مسيرته حتى الآن.",
+        bio_en: "Fama Haja is one of the most present participants in league history, having competed in most seasons since Season 4. Known for a highly competitive spirit and unpredictable playing style. Considered one of the most entertaining coaches in terms of competitive excitement, despite the major title having eluded him so far.",
+        country_ar: "تونس", country_en: "Tunis",
+        nationality_flag: "🇹🇳",
+        rivalries: []
+    },
+    "محمدو": {
+        bio_ar: "محمدو هو صاحب لقب الكأس في الموسم السابع، وأحد المدربين الذين أثاروا مفاجأة عند انضمامهم للبطولة في الموسم السابع. يتميز بأسلوب هجومي جريء وقدرة كبيرة على إدارة فرق قوية. حقق لقب الكأس في موسمه الأول مع البطولة مما يجعله أحد أبرز المدربين في سجل الدوري.",
+        bio_en: "Muhamadu is the cup champion of Season 7 and one of the coaches who made a big impression upon joining the league in Season 7. Known for his bold attacking style and great ability to manage strong teams. He claimed the cup title in his very first season with the league, making him one of the standout names in league history.",
+        country_ar: "موريتانيا", country_en: "Mauritania",
+        nationality_flag: "🇲🇷",
+        rivalries: []
+    },
+    "عبدالله": {
+        bio_ar: "عبدالله هو أحد المدربين المخضرمين الذين رافقوا البطولة منذ نشأتها في الموسم الأول. شارك في مواسم متعددة وقدم مستويات تنافسية مميزة. يتميز بحنكته التكتيكية وخبرته الطويلة في مواجهة مختلف أساليب اللعب، مما يجعله خصماً صعباً يُحسب حسابه دائماً.",
+        bio_en: "Abdellah is one of the veteran coaches who has been with the league since its founding in Season 1. He has participated in multiple seasons and delivered notable competitive performances. Known for his tactical acumen and long experience facing various play styles, he is always a difficult opponent to be reckoned with.",
+        country_ar: "الجزائر", country_en: "Algeria",
+        nationality_flag: "🇩🇿",
+        rivalries: []
+    },
+    "كنان": {
+        bio_ar: "كنان هو أحد المدربين البارزين من بلاد الشام، انضم للبطولة في الموسم السابع وسرعان ما فرض نفسه كمنافس قوي. حصل على جائزة مدرب الأسبوع في الموسم العاشر، وأوصل فريقه إلى نهائي كأس إنجلترا في الموسم نفسه. يتميز بمدرسة تكتيكية متميزة تعكس أسلوب كرة القدم الشامية المتوازن.",
+        bio_en: "Kenan is one of the prominent coaches from the Levant region, who joined the league in Season 7 and quickly established himself as a strong competitor. He won the Coach of the Week award in Season 10 and led his team to the FA Cup final in the same season. Known for a distinctive tactical school reflecting the balanced Levantine football style.",
+        country_ar: "سوريا", country_en: "Syria",
+        nationality_flag: "🇸🇾",
+        rivalries: [
+            { ar: "ديربي الشام: كنان × رضا", en: "Levant Derby: KENAN × RIDA", icon: "fas fa-map-marker-alt", desc_ar: "مواجهة شامية ملتهبة في قلب الدوري", desc_en: "A heated Levantine showdown in the heart of the league" }
+        ]
+    },
+    "أمين": {
+        bio_ar: "أمين هو أحد المدربين الذين انضموا للبطولة في الموسم الثامن وأثبتوا قدرتهم التنافسية. يتميز بأسلوب لعب متطور يعتمد على الحيازة والبناء من الخلف. شارك في الموسمين العاشر والحادي عشر وهو من المدربين الذين يُنتظر منهم بلوغ المراحل الأخيرة من البطولة.",
+        bio_en: "Amine is one of the coaches who joined the league in Season 8 and proved their competitive quality. Known for a sophisticated playing style based on possession and building from the back. He has participated in Season 10 and 11 and is one of the coaches expected to reach the later stages of the tournament.",
+        country_ar: "المغرب", country_en: "Morocco",
+        nationality_flag: "🇲🇦",
+        rivalries: []
+    },
+    "صلاح الدين": {
+        bio_ar: "صلاح الدين هو المشارك الجديد في الموسم العاشر والأكثر طموحاً، إذ صرّح قبيل انطلاق موسمه الأول بأن 'الكأس لي'. انضم للبطولة بقيادة فريق أستون فيلا وشارك في المنافسة بثقة عالية. وجوده أضاف حيوية وتنافساً جديداً للبطولة في موسمها الأكبر تاريخياً.",
+        bio_en: "Salaheddine is the most ambitious new participant in Season 10, having declared before his first season that 'the trophy is mine'. He joined the league managing Aston Villa and competed with great confidence. His presence added new vitality and competition to the league in its historically largest season.",
+        country_ar: "المغرب", country_en: "Morocco",
+        nationality_flag: "🇲🇦",
+        rivalries: []
+    },
+    "رضا": {
+        bio_ar: "رضا هو مدرب بورنموث في الموسم العاشر، وقد حقق واحدة من أبرز مفاجآت الموسم بقيادة فريقه لصدارة الدوري في النصف الأول من الموسم ونال جائزة مدرب الأسبوع الأول. يُعتبر من أبرز مدربي بلاد الشام في الدوري ويجمعه بكنان ديربي الشام الشهير.",
+        bio_en: "Rida is the Bournemouth coach in Season 10 who delivered one of the season's biggest surprises by leading his team to the top of the league standings in the first half of the season and winning the inaugural Coach of the Week award. He is considered one of the top Levantine coaches in the league and shares the Levant Derby with Kenan.",
+        country_ar: "سوريا", country_en: "Syria",
+        nationality_flag: "🇸🇾",
+        rivalries: [
+            { ar: "ديربي الشام: رضا × كنان", en: "Levant Derby: RIDA × KENAN", icon: "fas fa-map-marker-alt", desc_ar: "مواجهة تُلهب حماس الجمهور الشامي", desc_en: "A fixture that ignites the Levantine fanbase" }
+        ]
+    },
+    "مشري": {
+        bio_ar: "مشري هو أحد المشاركين الجدد في الموسم العاشر، انضم إلى البطولة وأظهر مستوى تنافسياً لافتاً في أولى مشاركاته. حضوره أضاف ثقلاً على قائمة المتسابقين في أكبر موسم بتاريخ الدوري. يشارك أيضاً في الموسم الحادي عشر مما يشير إلى ثقته في متابعة مسيرته التنافسية.",
+        bio_en: "Mecheri is one of the new participants in Season 10, who joined the league and showed a notable competitive level in his debut. His presence added weight to the list of contenders in the largest season in league history. He is also participating in Season 11, indicating his confidence in continuing his competitive journey.",
+        country_ar: "الجزائر", country_en: "Algeria",
+        nationality_flag: "🇩🇿",
+        rivalries: []
+    },
+    "سراج": {
+        bio_ar: "سراج هو أحد المشاركين الجدد في الموسم العاشر الذي خاض تجربته الأولى مع البطولة بعزيمة قوية. يعتمد أسلوباً تكتيكياً تدريجياً يبني عليه موسماً بعد موسم. شارك في الموسم الحادي عشر أيضاً مما يدل على طموحاته في الوصول لأعلى المراتب.",
+        bio_en: "Siradj is one of the new Season 10 participants who made his debut in the league with strong determination. He follows a progressive tactical style that he builds upon season by season. He also participated in Season 11, demonstrating his ambition to reach the top standings.",
+        country_ar: "الجزائر", country_en: "Algeria",
+        nationality_flag: "🇩🇿",
+        rivalries: []
+    },
+    "الباغر": {
+        bio_ar: "الباغر هو أحد المدربين الذين شاركوا في الموسم التاسع (الملغى) والموسم الحادي عشر. يتميز بأسلوب تنافسي مثير ويعتبر إضافة قيّمة للبطولة في نسختها الأخيرة. وجوده في الموسم الحادي عشر يُضيف منافساً جديداً على اللقب.",
+        bio_en: "Albagher is one of the coaches who participated in Season 9 (cancelled) and Season 11. Known for an exciting competitive style and considered a valuable addition to the league in its latest edition. His presence in Season 11 adds another title contender to the mix.",
+        country_ar: "السودان", country_en: "Sudan",
+        nationality_flag: "🇸🇩",
+        rivalries: []
+    },
+    "رياض": {
+        bio_ar: "رياض هو أحد المدربين الذين شاركوا في الموسم السابع وأبهروا الجمهور بمستواهم التنافسي. يتميز بأسلوب هجومي جريء ينسجم مع فلسفة كرة القدم الجميلة. تجربته في الموسم السابع كانت بداية لمسيرة رياضية تنافسية يطمح إلى تطويرها.",
+        bio_en: "Riyad is one of the coaches who participated in Season 7 and impressed the audience with their competitive level. Known for a bold attacking style consistent with the beautiful game philosophy. His experience in Season 7 was the beginning of a competitive sporting journey he aspires to develop.",
+        country_ar: "الجزائر", country_en: "Algeria",
+        nationality_flag: "🇩🇿",
+        rivalries: []
+    },
+    "زيد": {
+        bio_ar: "زيد هو أحد المشاركين في الموسم العاشر، وهو مدرب شاب طموح يحمل طاقة تنافسية لافتة. شارك في أكبر نسخة من تاريخ البطولة بـ15 مدرباً وأثبت حضوراً تنافسياً جيداً. يُمثل جيلاً جديداً من المدربين الذين يُثرون المنافسة في الدوري.",
+        bio_en: "Zaid is one of the Season 10 participants, a young ambitious coach with a notable competitive energy. He participated in the largest edition in league history with 15 coaches and demonstrated a solid competitive presence. He represents a new generation of coaches enriching the league's competition.",
+        country_ar: "المغرب", country_en: "Morocco",
+        nationality_flag: "🇲🇦",
+        rivalries: []
+    },
+    "بامبو": {
+        bio_ar: "بامبو هو أحد المشاركين الجدد في الموسم الحادي عشر، وهو وجه مثير للاهتمام في قائمة المدربين المشاركين في نسخة صيف 2026. انضم للبطولة بحماس كبير ويُتوقع منه أن يكون منافساً شرساً.",
+        bio_en: "Bamboo is one of the new participants in Season 11 and an interesting face on the list of coaches competing in the Summer 2026 edition. He joined the league with great enthusiasm and is expected to be a fierce competitor.",
+        country_ar: "مصر", country_en: "Egypt",
+        nationality_flag: "🇪🇬",
+        rivalries: []
+    },
+    "حاقو": {
+        bio_ar: "حاقو هو أحد المشاركين الجدد في الموسم الحادي عشر، وهو مدرب يُضيف تنوعاً تنافسياً للبطولة في نسختها الجديدة. شارك في الموسم العاشر بصفته مساعد مدرب لأنيس في فريق نوتينغهام وينتظر منه الكثير في الموسم الجديد.",
+        bio_en: "Hako is one of the new participants in Season 11, a coach who adds competitive diversity to the league in its new edition. He participated in the tenth season as an assistant coach to Anis in the Nottingham team, and much is expected from him in the new season.",
+        country_ar: "الجزائر", country_en: "Algeria",
+        nationality_flag: "🇩🇿",
+        rivalries: []
+    }
+};
+
+// All coaches list for selector (all unique participants)
+const allCoaches = [
+    "أنيس","رجاوي","مهند","خالد","كارلو","فما حاجة","محمدو",
+    "عبدالله","كنان","أمين","صلاح الدين","رضا","مشري","سراج",
+    "الباغر","رياض","زيد","بامبو","حاقو"
+];
+
+// ============================================================
+//  UTILITIES
+// ============================================================
+let currentCoach = null;
+
+function t(ar, en) { return currentLang === 'ar' ? ar : en; }
+
+function getSeasonYears(s) {
+    const start = new Date(s.start);
+    return start.getFullYear().toString();
+}
+
+function computeCoachStats(name) {
+    let played = 0, leagueTitles = 0, cupTitles = 0, cancelled = 0;
+    for (const [num, s] of Object.entries(leagueSeasons)) {
+        if (!s.participants || !s.participants.includes(name)) continue;
+        if (s.status === 'قادم') { cancelled++; continue; }
+        played++;
+        if (s.league === name) leagueTitles++;
+        if (s.cup === name) cupTitles++;
+    }
+    return { played, leagueTitles, cupTitles };
+}
+
+function buildAchievements(name) {
+    const items = [];
+    for (const [num, s] of Object.entries(leagueSeasons)) {
+        if (!s.participants || !s.participants.includes(name)) continue;
+        if (s.status === 'ملغى') continue;
+        if (s.league === name) {
+            items.push({
+                cls: 'gold', icon: 'fas fa-trophy',
+                title_ar: `بطل الدوري - الموسم ${num}`,
+                title_en: `League Champion - Season ${num}`,
+                desc_ar: `الفوز ببطولة دوري المدرب الأفضل`,
+                desc_en: `Won the Best Manager League championship`
+            });
+        }
+        if (s.cup === name) {
+            items.push({
+                cls: 'bronze', icon: 'fa-solid fa-crown',
+                title_ar: `بطل الكأس - الموسم ${num}`,
+                title_en: `Cup Champion - Season ${num}`,
+                desc_ar: `الفوز ببطولة الكأس`,
+                desc_en: `Won the Cup Championship`
+            });
+        }
+    }
+    // Coach of week special cases
+    const sec = {
+        "رجاوي": { ar: "وصيف الكأس - الموسم 3 و 4 و 8", en: "Cup Runner-Up - Season 3,4,8" },
+        "عبدالله": { ar: "وصيف الكأس - الموسم 1 و 2", en: "Cup Runner-Up - Season 1,2" },
+        "كنان": { ar: "وصيف الكأس - الموسم 10", en: "Cup Runner-Up - Season 10" },
+        "فما حاجة": { ar: "وصيف الكأس - الموسم 7", en: "Cup Runner-Up - Season 7" },
+
+    };
+    if (sec[name]) {
+        items.push({
+            cls: 'silver', icon: 'fa-solid fa-2',
+            title_ar: sec[name].ar, title_en: sec[name].en,
+            desc_ar: 'وصيف الكأس', desc_en: 'Cup Runner-Up'
+        });
+    }
+    const cow = {
+        "رجاوي": { ar: "مدرب الموسم - الموسم 10", en: "Coach of the season - Season 10" },
+    };
+    if (cow[name]) {
+        items.push({
+            cls: 'gold', icon: 'fas fa-star',
+            title_ar: cow[name].ar, title_en: cow[name].en,
+            desc_ar: 'جائزة مدرب الموسم', desc_en: 'Coach of the season Award'
+        });
+    }
+    const cowMap = {
+        "رضا": { ar: "مدرب الأسبوع الأول - الموسم 10", en: "Coach of the Week 1 - Season 10" },
+        "رجاوي": { ar: "مدرب الأسبوع الثاني و الرابع و الخامس - الموسم 10", en: "Coach of the Week 2,4,5 - Season 10" },
+        "كنان": { ar: "مدرب الأسبوع الثالث - الموسم 10", en: "Coach of the Week 3 - Season 10" },
+    };
+    if (cowMap[name]) {
+        items.push({
+            cls: 'silver', icon: 'fas fa-star',
+            title_ar: cowMap[name].ar, title_en: cowMap[name].en,
+            desc_ar: 'جائزة مدرب الأسبوع', desc_en: 'Coach of the Week Award'
+        });
+    }
+    // First Half champion S10
+    const fhMap = {
+        "رضا": { ar: "بطل فترة الذهاب - الموسم 10", en: "First Half Champion - Season 10" }
+    };
+    if (fhMap[name]) {
+        items.push({
+            cls: 'silver', icon: 'fas fa-medal',
+            title_ar: fhMap[name].ar, title_en: fhMap[name].en,
+            desc_ar: 'صدارة الدوري في فترة الذهاب', desc_en: 'Led the league standings in the first half'
+        });
+    }
+    return items;
+}
+
+function buildSeasonHistory(name) {
+    const rows = [];
+    for (const [num, s] of Object.entries(leagueSeasons)) {
+        if (!s.participants || !s.participants.includes(name)) continue;
+        let achievement = '', note = '';
+        if (s.status === 'ملغى') {
+            achievement = `<span class="badge-part">${t('مشارك', 'Participant')}</span>`;
+            note = `<span class="badge-part">${t('ملغى','Cancelled')}</span>`;
+        }
+        else if (s.status === 'قادم') {
+            achievement = `<span class="badge-part">${t('مشارك', 'Participant')}</span>`;
+            note = `<span class="badge-part">${t('قادم','Cancelled')}</span>`;
+        }
+         else {
+            const parts = [];
+            if (s.league === name) parts.push(`<span class="badge-champ">${t('بطل الدوري','League Champion')}</span>`);
+            if (s.cup === name) parts.push(`<span class="badge-cup">${t('بطل الكأس','Cup Champion')}</span>`);
+            achievement = parts.length ? parts.join(' ') : `<span class="badge-part">${t('مشارك','Participant')}</span>`;
+            note = "";
+        }
+        rows.push({ num, start: s.start, end: s.end, achievement, note });
+    }
+    return rows;
+}
+
+// ============================================================
+//  RENDER FUNCTIONS
+// ============================================================
+function renderSelector() {
+    const grid = document.getElementById('coachesSelectorGrid');
+    grid.innerHTML = '';
+    allCoaches.forEach(name => {
+        const imgSrc = participantImages[name] || '';
+        const btn = document.createElement('button');
+        btn.className = 'coach-select-btn';
+        btn.setAttribute('data-coach', name);
+        btn.innerHTML = `
+            <img src="${imgSrc}" alt="${name}" onerror="this.style.display='none'">
+            <span class="btn-name">${name}</span>
+        `;
+        btn.addEventListener('click', () => loadCoach(name));
+        grid.appendChild(btn);
+    });
+}
+
+function loadCoach(name) {
+    currentCoach = name;
+    const profile = coachProfiles[name] || {};
+    const stats = computeCoachStats(name);
+    const achievements = buildAchievements(name);
+    const seasonRows = buildSeasonHistory(name);
+    const img = participantImages[name] || '';
+    const nameEn = nameMapAR_EN[name] || name;
+
+    // Highlight selector
+    document.querySelectorAll('.coach-select-btn').forEach(b => {
+        b.classList.toggle('active', b.getAttribute('data-coach') === name);
+    });
+
+    // Show / hide
+    document.getElementById('noProfileMsg').style.display = 'none';
+    document.getElementById('profileContent').style.display = 'block';
+
+    // Avatar & names
+    document.getElementById('profileAvatar').src = img;
+    document.getElementById('profileAvatar').alt = name;
+    document.getElementById('profileNameAr').textContent = name;
+    document.getElementById('profileNameEn').textContent = nameEn;
+    document.getElementById('profileBadge').textContent = t('ملف المدرب', 'Coach Profile');
+
+    // Tags
+    const tagsEl = document.getElementById('profileTags');
+    tagsEl.innerHTML = `
+        <span class="profile-tag"><i class="fas fa-flag"></i> ${t(profile.country_ar || '—', profile.country_en || '—')} ${profile.nationality_flag || ''}</span>
+        <span class="profile-tag"><i class="fas fa-calendar-check"></i> ${stats.played} ${t('موسم','Seasons')}</span>
+        ${stats.leagueTitles > 0 ? `<span class="profile-tag"><i class="fas fa-trophy"></i> ${stats.leagueTitles} ${t('لقب دوري','League Title')}</span>` : ''}
+        ${stats.cupTitles > 0 ? `<span class="profile-tag"><i class="fa-solid fa-crown"></i> ${stats.cupTitles} ${t('لقب كأس','Cup Title')}</span>` : ''}
+    `;
+
+    // Quick stats
+    const qs = document.getElementById('profileQuickStats');
+    qs.innerHTML = `
+        <div class="card quick-stat animate-in" style="animation-delay:0.1s">
+            <div class="quick-stat-num">${stats.played}</div>
+            <div class="quick-stat-label" data-ar="لعب" data-en="Played">${t('لعب','Played')}</div>
+        </div>
+        <div class="card quick-stat animate-in" style="animation-delay:0.2s">
+            <div class="quick-stat-num">${stats.leagueTitles}</div>
+            <div class="quick-stat-label" data-ar="ألقاب الدوري" data-en="League Titles">${t('ألقاب الدوري','League Titles')}</div>
+        </div>
+        <div class="card quick-stat animate-in" style="animation-delay:0.3s">
+            <div class="quick-stat-num">${stats.cupTitles}</div>
+            <div class="quick-stat-label" data-ar="ألقاب الكأس" data-en="Cup Titles">${t('ألقاب الكأس','Cup Titles')}</div>
+        </div>
+        <div class="card quick-stat animate-in" style="animation-delay:0.4s">
+            <div class="quick-stat-num">${stats.leagueTitles + stats.cupTitles}</div>
+            <div class="quick-stat-label" data-ar="إجمالي الألقاب" data-en="Total Titles">${t('إجمالي الألقاب','Total Titles')}</div>
+        </div>
+    `;
+
+    // Bio
+    document.getElementById('profileBio').innerHTML = t(profile.bio_ar || '—', profile.bio_en || '—');
+
+    // Achievements
+    const achEl = document.getElementById('profileAchievements');
+    if (achievements.length === 0) {
+        achEl.innerHTML = `<p style="color:var(--text-muted)">${t('لا توجد ألقاب مسجّلة حتى الآن','No titles recorded yet')}</p>`;
+    } else {
+        achEl.innerHTML = achievements.map(a => `
+            <div class="achievement-item animate-in">
+                <div class="achievement-icon ${a.cls}"><i class="${a.icon}"></i></div>
+                <div class="achievement-text">
+                    <h4>${t(a.title_ar, a.title_en)}</h4>
+                    <p>${t(a.desc_ar, a.desc_en)}</p>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Season table
+    const tbody = document.getElementById('profileSeasonBody');
+    tbody.innerHTML = seasonRows.map(r => `
+        <tr>
+            <td><strong>${t('الموسم','Season')} ${r.num}</strong></td>
+            <td>${r.start ? new Date(r.start).getFullYear() : '—'}</td>
+            <td>${r.achievement}</td>
+            <td>${r.note}</td>
+        </tr>
+    `).join('');
+
+    // Rivalries
+    const rivalries = profile.rivalries || [];
+    const rivSection = document.getElementById('rivalrySection');
+    if (rivalries.length > 0) {
+        rivSection.style.display = 'block';
+        document.getElementById('profileRivalries').innerHTML = rivalries.map(rv => `
+            <div class="achievement-item animate-in">
+                <div class="achievement-icon"><i class="${rv.icon}"></i></div>
+                <div class="achievement-text">
+                    <h4>${t(rv.ar, rv.en)}</h4>
+                    <p>${t(rv.desc_ar, rv.desc_en)}</p>
+                </div>
+            </div>
+        `).join('');
+    } else {
+        rivSection.style.display = 'none';
+    }
+
+    // Update table header translations
+    document.querySelectorAll('.season-table th').forEach(th => {
+        const ar = th.getAttribute('data-ar'), en = th.getAttribute('data-en');
+        if (ar && en) th.textContent = t(ar, en);
+    });
+
+    // Scroll to profile hero smoothly
+    setTimeout(() => {
+        document.getElementById('profileContent').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 50);
+}
+
+function applyLanguage(lang) {
+    currentLang = lang;
+    document.querySelectorAll('[data-ar][data-en]').forEach(el => {
+        const val = lang === 'ar' ? el.getAttribute('data-ar') : el.getAttribute('data-en');
+        if (el.tagName !== 'INPUT' && el.tagName !== 'TEXTAREA') el.textContent = val;
+    });
+    document.querySelector('html').setAttribute('lang', lang);
+    document.querySelector('html').setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+    document.querySelector('body').setAttribute('lang', lang);
+    document.querySelector('body').setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+    // Re-render profile if active
+    if (currentCoach) loadCoach(currentCoach);
+}
+
+// ============================================================
+//  INIT
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+    renderSelector();
+
+    // Lang buttons
+    document.getElementById('langAr').addEventListener('click', () => {
+        applyLanguage('ar');
+        document.getElementById('langAr').classList.add('active');
+        document.getElementById('langEn').classList.remove('active');
+    });
+    document.getElementById('langEn').addEventListener('click', () => {
+        applyLanguage('en');
+        document.getElementById('langEn').classList.add('active');
+        document.getElementById('langAr').classList.remove('active');
+    });
+
+    // Mobile nav
+    const menuBtn = document.getElementById('mobileMenuBtn');
+    const mainNav = document.getElementById('mainNav');
+    const navOverlay = document.getElementById('navOverlay');
+
+    function openMenu() {
+        mainNav.classList.add('active');
+        navOverlay.classList.add('active');
+        document.body.classList.add('menu-open');
+    }
+
+    function closeMenu() {
+        mainNav.classList.remove('active');
+        navOverlay.classList.remove('active');
+        document.body.classList.remove('menu-open');
+    }
+
+    function toggleMenu(e) {
+        e.stopPropagation();
+        if (mainNav.classList.contains('active')) {
+            closeMenu();
+        } else {
+            openMenu();
+        }
+    }
+
+    menuBtn.addEventListener('click', toggleMenu);
+    menuBtn.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        toggleMenu(e);
+    });
+
+    // Close nav when clicking a link inside it
+    mainNav.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => closeMenu());
+    });
+
+    // Close on overlay click
+    navOverlay.addEventListener('click', closeMenu);
+    navOverlay.addEventListener('touchend', closeMenu);
+
+    // Close on outside click/touch
+    document.addEventListener('click', e => {
+        if (!mainNav.contains(e.target) && !menuBtn.contains(e.target)) {
+            closeMenu();
+        }
+    });
+
+    // URL param: ?coach=أنيس
+    const params = new URLSearchParams(window.location.search);
+    const coachParam = params.get('coach');
+    if (coachParam && allCoaches.includes(coachParam)) {
+        loadCoach(coachParam);
+    }
+});
+
+</script>
+</body>
+</html>
