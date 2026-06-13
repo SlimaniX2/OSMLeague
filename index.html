@@ -2338,6 +2338,224 @@
             }
         }
 
+        /* ===================================================
+           RULES & GUIDELINES SECTION
+           =================================================== */
+
+        /* Page intro banner */
+        .rules-intro-card {
+            background: linear-gradient(135deg, rgba(6,71,51,0.6) 0%, rgba(64,180,47,0.2) 100%);
+            border: 2px solid var(--dark-red);
+            border-radius: var(--radius);
+            padding: 40px;
+            margin-bottom: 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rules-intro-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 5px;
+            background: var(--gradient-green);
+        }
+
+        .rules-intro-card .rules-intro-icon {
+            font-size: 3.5rem;
+            color: var(--green);
+            margin-bottom: 20px;
+            display: block;
+            filter: drop-shadow(0 4px 12px rgba(255,120,5,0.3));
+        }
+
+        /* Category container */
+        .rules-categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(540px, 1fr));
+            gap: 35px;
+        }
+
+        /* Individual category card */
+        .rules-category-card {
+            background: var(--gradient-dark);
+            border: 2px solid var(--card-border);
+            border-radius: var(--radius);
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .rules-category-card:hover {
+            border-color: var(--dark-red);
+            box-shadow: var(--shadow);
+            transform: translateY(-6px);
+        }
+
+        /* Category header bar */
+        .rules-category-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 20px 28px;
+            background: var(--gradient-red);
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .rules-category-header .rules-cat-icon {
+            width: 44px;
+            height: 44px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .rules-category-header .rules-cat-title {
+            flex: 1;
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #fff;
+        }
+
+        .rules-category-header .rules-cat-count {
+            background: rgba(255,255,255,0.2);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        /* Rules list inside a card */
+        .rules-list {
+            padding: 22px 28px 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        /* Individual rule row */
+        .rule-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            padding: 16px 18px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.06);
+            border-radius: var(--radius-sm);
+            transition: var(--transition);
+        }
+
+        .rule-item:hover {
+            background: rgba(6,71,51,0.18);
+            border-color: var(--dark-red);
+        }
+
+        .rule-number {
+            width: 32px;
+            height: 32px;
+            background: var(--gradient-green);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.82rem;
+            font-weight: 900;
+            color: #fff;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .rule-text {
+            flex: 1;
+        }
+
+        .rule-text strong {
+            display: block;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 5px;
+        }
+
+        .rule-text p {
+            font-size: 0.92rem;
+            color: var(--text-muted);
+            margin: 0;
+            line-height: 1.7;
+        }
+
+        .rule-badge {
+            flex-shrink: 0;
+            padding: 4px 10px;
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            align-self: flex-start;
+        }
+
+        .rule-badge.mandatory {
+            background: rgba(220, 38, 38, 0.15);
+            color: #f87171;
+            border: 1px solid rgba(220, 38, 38, 0.3);
+        }
+
+        .rule-badge.recommended {
+            background: rgba(64, 180, 47, 0.15);
+            color: var(--green);
+            border: 1px solid rgba(64, 180, 47, 0.3);
+        }
+
+        .rule-badge.info {
+            background: rgba(59, 130, 246, 0.12);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.25);
+        }
+
+        /* Responsive for rules */
+        @media (max-width: 768px) {
+            .rules-categories-grid {
+                grid-template-columns: 1fr;
+            }
+            .rules-intro-card {
+                padding: 28px 20px;
+            }
+            .rules-category-header {
+                padding: 16px 18px;
+            }
+            .rules-list {
+                padding: 16px 18px 20px;
+                gap: 10px;
+            }
+            .rule-item {
+                padding: 14px 14px;
+                gap: 12px;
+            }
+            .rule-text strong {
+                font-size: 0.95rem;
+            }
+            .rule-text p {
+                font-size: 0.88rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .rules-category-header .rules-cat-icon {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+            .rules-category-header .rules-cat-title {
+                font-size: 1rem;
+            }
+        }
+
 </style>
 </head>
 <body lang="ar">
@@ -2402,13 +2620,9 @@
                 </div>
                 <h1 data-en="Best Manager League" data-ar="دوري المدرب الأفضل">دوري المدرب الأفضل</h1>
                 <p data-en="The ultimate competitive football management tournament on Online Soccer Manager" data-ar="أعلى بطولة إدارة كرة قدم تنافسية على لعبة Online Soccer Manager">أعلى بطولة إدارة كرة قدم تنافسية على لعبة Online Soccer Manager</p>
-                <a href="https://i.ibb.co/tPPxPBPY/COACHES-LIST-WILDCARDS.jpg" class="btn" style="margin-top: 40px;">
+                <a href="https://i.ibb.co/BVrXfdHn/COACHES-LIST-WITH-COUNTRY.jpg" class="btn" style="margin-top: 40px;">
                     <i class="fa-solid fa-people-group"></i>
                     <span data-en="OSM League - SUMMER 2026 - Coaches List" data-ar="دوري المدرب الأفضل - صيف 2026 - لائحة المدربين">دوري المدرب الأفضل - صيف 2026 - لائحة المدربين</span>
-                </a>
-                <a href="https://www.youtube.com/live/KhbhHe5r0LE" class="btn" style="margin-top: 40px;">
-                    <i class="fa-solid fa-circle-play"></i>
-                    <span data-en="Watch the draw here" data-ar="تابع قرعة الدوري من هنا">تابع قرعة الدوري من هنا</span>
                 </a>
             </div>
         </section>
@@ -2426,7 +2640,7 @@
                 </div>
 
             <img 
-                src="https://i.ibb.co/v6rbyRrv/RANKING38.jpg"
+                src="https://i.ibb.co/rKLSMQ0m/RANKING.jpg"
                 alt="Best Manager League"
                 class="overview-image">
 
@@ -2553,12 +2767,12 @@
                     
                     <div class="card animate-in" style="animation-delay: 0.1s; margin-bottom: 50px;">
                         <h3 data-en="The Upcoming Season" data-ar="الموسم القادم">الموسم القادم</h3>
-                        <p data-en="The organizing committee is preparing to host the 11th season of OSM League, scheduled to take place next summer. This page will be updated after the draw." data-ar="تستعد اللجنة المنظمة لتنظيم الموسم الحادي عشر من دوري المدرب الأفضل المقرر تنظيمه الصيف القادم. سيتم تحديث هذه الصفحة بعد القرعة."></p>
+                        <p data-en="OSM League returns in a new edition in Summer 2026, reaching its 11th season, featuring 15 elite Online Soccer Manager coaches and promising a historic season." data-ar="تعود بطولة دوري المدرب الأفضل في نسخة جديدة في صيف 2026 ، بحيث تصل لمحطتها الحادية عشرة ، وتضم 15 مدرب من نخبة مدربي لعبة المدرب الأفضل وتعد بموسم تاريخي."></p> 
                     </div>
                     
                     <div class="section">
                         <h3 data-en="Season 11 Coaches & Teams" data-ar="مدربو وفرق الموسم الحادي عشر">مدربو وفرق الموسم الحادي عشر</h3>
-                        <p class="mb-30" data-en="Meet the coaches and their teams competing in the 11th OSM SEASON" data-ar="تعرف على المدربين وفرقهم المشاركة في النسخة احادية عشرة من دوري المدرب الأفضل">تعرف على المدربين وفرقهم المشاركة في النسخة العاشرة من بطولة المدرب الأفضل</p>
+                        <p class="mb-30" data-en="Meet the coaches and their teams competing in the 11th OSM SEASON" data-ar="تعرف على المدربين وفرقهم المشاركة في النسخة الحادية عشرة من دوري المدرب الأفضل">تعرف على المدربين وفرقهم المشاركة في النسخة العاشرة من بطولة المدرب الأفضل</p>
                         
                         <div class="coaches-grid" id="season10Coaches">
                             <!-- Season 10 coaches will be dynamically generated here -->
@@ -2570,16 +2784,16 @@
                         
                         <div class="matches-container">
                             <div class="card match-card animate-in" style="animation-delay: 0.1s;">
-                               <!-- <img src="https://i.ibb.co/1fmVg6cR/classico.jpg" alt="Classic Match" class="match-image"> -->
+                               <!-- <img src="" alt="Classic Match" class="match-image"> -->
                                 <div class="match-content">
                                     <span class="match-type" data-en="Classico" data-ar="الكلاسيكو">الكلاسيكو</span>
                                     <h3 id="classicMatchName">أنيس × رجاوي</h3>
                                     <p data-en="A historic rivalry that defines the competition" data-ar="منافسة تاريخية تحدد هوية البطولة">منافسة تاريخية تحدد هوية البطولة</p>
                                     
                                     <div class="match-teams">
-                                        <span id="classicTeam1">نوتينغهام فورست</span>
+                                        <span id="classicTeam1">ويستهام</span>
                                         <span class="vs">VS</span>
-                                        <span id="classicTeam2">مانشستر سيتي</span>
+                                        <span id="classicTeam2">تشيلسي</span>
                                     </div>
                                     
                                     <div class="coach-info">
@@ -2589,20 +2803,20 @@
                             </div>
                             
                             <div class="card match-card animate-in" style="animation-delay: 0.2s;">
-                               <!-- <img src="https://i.ibb.co/jZzB7FPG/derby.jpg" alt="Derby" class="match-image"> -->
+                               <!-- <img src="" alt="Derby" class="match-image"> -->
                                 <div class="match-content">
-                                    <span class="match-type" data-en="Derby" data-ar="دربي">دربي</span>
-                                    <h3 id="derbyMatchName">أنيس × خالد</h3>
+                                    <span class="match-type" data-en="" data-ar="دربي الشام">دربي الشام</span>
+                                    <h3 id="derbyMatchName">رضا × كنان</h3>
                                     <p data-en="Intense local rivalry with high stakes" data-ar="منافسة محلية حادة ذات مخاطر عالية">منافسة محلية حادة ذات مخاطر عالية</p>
                                     
                                     <div class="match-teams">
-                                        <span id="derbyTeam1">نوتينغهام فورست</span>
+                                        <span id="derbyTeam1">إفيرتون</span>
                                         <span class="vs">VS</span>
-                                        <span id="derbyTeam2">نيوكاسل يونايتد</span>
+                                        <span id="derbyTeam2">بورنموث</span>
                                     </div>
                                     
                                     <div class="coach-info">
-                                        <p><strong data-en="Coaches:" data-ar="المدربون:">المدربون:</strong> <span id="derbyMatchCoaches">أنيس × خالد</span></p>
+                                        <p><strong data-en="Coaches:" data-ar="المدربون:">المدربون:</strong> <span id="derbyMatchCoaches">كنان × رضا</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -2755,6 +2969,37 @@
     </div>
 </section>
 
+<!-- ============================================================
+     RULES & GUIDELINES PAGE
+     ============================================================ -->
+<section id="rules" class="page-section" style="display: none;">
+    <div class="container">
+        <div class="section">
+
+            <!-- Section Header -->
+            <div class="section-title">
+                <div class="title-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <h2 data-en="Rules &amp; Guidelines" data-ar="القواعد والإرشادات">القواعد والإرشادات</h2>
+            </div>
+
+            <!-- Intro banner -->
+            <div class="rules-intro-card animate-in" style="animation-delay:0.1s">
+                <i class="fas fa-shield-alt rules-intro-icon"></i>
+                <h3 data-en="Official League Regulations" data-ar="اللوائح الرسمية للدوري">اللوائح الرسمية للدوري</h3>
+                <p data-en="All coaches are required to read, understand, and comply with the following regulations. These rules ensure a fair, competitive, and enjoyable experience for every participant." data-ar="يُطلب من جميع المدربين قراءة اللوائح التالية وفهمها والامتثال لها. تضمن هذه القواعد تجربة عادلة وتنافسية ممتعة لكل مشارك.">يُطلب من جميع المدربين قراءة اللوائح التالية وفهمها والامتثال لها. تضمن هذه القواعد تجربة عادلة وتنافسية ممتعة لكل مشارك.</p>
+            </div>
+
+            <!-- Categories grid – rendered by JS from rulesData below -->
+            <div class="rules-categories-grid" id="rulesCategoriesGrid">
+                <!-- Populated by initRulesPage() -->
+            </div>
+
+        </div>
+    </div>
+</section>
+
 </main>
 
     <!-- Footer -->
@@ -2775,7 +3020,8 @@
                     <ul style="list-style: none; font-size: 1.1rem;">
                         <li><a href="https://osmleague.ddns.net/" class="footer-link" data-en="League Overview" data-ar="نظرة عامة" style="display: block; padding: 10px 0; border-bottom: 1px solid var(--card-border);">نظرة عامة</a></li>
                         <li><a href="https://osmleague.ddns.net/docs/match_schedule.pdf" class="footer-link" data-en="Match Schedule" data-ar="جدول المباريات" style="display: block; padding: 10px 0; border-bottom: 1px solid var(--card-border);">جدول المباريات</a></li>
-                        <li><a href="https://i.ibb.co/FkXHbVc7/COACH-LIST-with-country.jpg" class="footer-link" data-en="Season 11 Coaches List" data-ar="لائحة مدربي الموسم الحادي عشر" style="display: block; padding: 10px 0; border-bottom: 1px solid var(--card-border);">الموسم الحادي عشر</a></li>
+                        <li><a href="https://i.ibb.co/93StPrPk/COACHES-LIST-WITH-COUNTRY.jpg" class="footer-link" data-en="Season 11 Coaches List" data-ar="لائحة مدربي الموسم الحادي عشر" style="display: block; padding: 10px 0; border-bottom: 1px solid var(--card-border);">الموسم الحادي عشر</a></li>
+                        <li><a href="#rules" class="footer-link nav-link" data-en="Rules &amp; Guidelines" data-ar="القواعد والإرشادات" style="display: block; padding: 10px 0; border-bottom: 1px solid var(--card-border);">القواعد والإرشادات</a></li>
                     </ul>
                 </div>
                 
@@ -2800,7 +3046,7 @@
             "أنيس": "https://i.ibb.co/rGJFyW1p/ANIS.jpg",
             "رجاوي": "https://i.ibb.co/JjzHYJsp/RAJAWI.jpg",
             "مهند": "https://i.ibb.co/22wDwLy/MOHANED.jpg",
-            "خالد": "https://i.ibb.co/4bV3wjZ/KHALED.jpg",
+            "خالد": "https://i.ibb.co/NnZsnyc9/KHALED.jpg",
             "كارلو": "https://i.ibb.co/QF5c7fkH/CHARLO.jpg",
             "فما حاجة": "https://i.ibb.co/Hf3c0QCD/FAMA-7-AJA.jpg",
             "محمدو": "https://i.ibb.co/Xf7XKZVd/MUHAMADU.jpg",
@@ -2813,7 +3059,7 @@
             "سراج": "https://i.ibb.co/bjKKRbbW/SIRADJ.jpg",
             "الباغر": "https://i.ibb.co/Z6NJLD2c/ALBAGER.jpg",
             "رياض": "https://i.ibb.co/DHDcDS3F/RIYADH.jpg",
-            "زيد": "https://i.ibb.co/RpYZWmkP/ZAID.jpg",
+            "زيد": "https://i.ibb.co/rGDssVcc/ZAID.jpg",
             "بامبو": "https://i.ibb.co/HDnBTtYT/BAMBOO.jpg",
             "حاقو": "https://i.ibb.co/vxCM7SYy/HAKO.jpg",
         };
@@ -3016,19 +3262,19 @@
                          "مهند",
                          "عبدالله",
                          "كنان",
-                         "خالد",
                          "كارلو",
                          "أمين",
                          "رضا",
                          "مشري",
                          "سراج",
                          "فما حاجة",
+                         "زيد",
                          "حاقو",
                          "بامبو",
                          "الباغر"
                     ],
                     "classic_match": "أنيس × رجاوي",
-                    "derby": "أنيس × خالد"
+                    "derby": "كنان × رضا"
                 }
             }
         };
@@ -3168,57 +3414,59 @@
 
         // Teams and coaches mapping - FOR SEASON 10 ONLY
         const teamsCoachesSeason11 = {
-            "أنيس": "",
-            "رجاوي": "",
-            "مهند": "",
-            "خالد": "",
-            "كارلو": "",
-            "فما حاجة": "",
-            "عبدالله": "",
-            "كنان": "",
-            "أمين": "",
-            "حاقو": "",
-            "رضا": "",
-            "مشري": "",
-            "سراج": "",
-            "بامبو": ""
+            "أنيس": "ويستهام يونايتد",
+            "رجاوي": "تشيلسي",
+            "مهند": "أستون فيلا",
+            "زيد": "توتنهام",
+            "كارلو": "مانشستر يونايتد",
+            "فما حاجة": "فولهام",
+            "عبدالله": "أرسنال",
+            "كنان": "بورنموث",
+            "أمين": "مانشستر سيتي",
+            "حاقو": "نيوكاسل يونايتد",
+            "رضا": "إفيرتون",
+            "مشري": "برايتون",
+            "سراج": "نوتينغهام",
+            "بامبو": "كريستال بالاس",
+            "الباغر": "ليفربول"
         };
 
         // Coach images via URLs (easy to edit)
         const coachImages = {
-            "أنيس": "",
-            "رجاوي": "",
-            "مهند": "",
-            "خالد": "",
-            "كارلو": "",
-            "فما حاجة": "",
-            "محمدو": "",
-            "عبدالله": "",
-            "كنان": "",
-            "أمين": "",
-            "صلاح الدين": "",
-            "رضا": "",
-            "مشري": "",
-            "سراج": "",
-            "زيد": ""
+            "أنيس": "https://upload.wikimedia.org/wikipedia/en/c/c2/West_Ham_United_FC_logo.svg",
+            "رجاوي": "https://upload.wikimedia.org/wikipedia/en/c/cc/Chelsea_FC.svg",
+            "مهند": "https://upload.wikimedia.org/wikipedia/en/9/9a/Aston_Villa_FC_new_crest.svg",
+            "زيد": "https://upload.wikimedia.org/wikipedia/en/b/b4/Tottenham_Hotspur.svg",
+            "كارلو": "https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg",
+            "فما حاجة": "https://upload.wikimedia.org/wikipedia/en/e/eb/Fulham_FC_%28shield%29.svg",
+            "بامبو": "https://upload.wikimedia.org/wikipedia/en/thumb/a/a2/Crystal_Palace_FC_logo_%282022%29.svg/1280px-Crystal_Palace_FC_logo_%282022%29.svg.png",
+            "عبدالله": "https://upload.wikimedia.org/wikipedia/hif/8/82/Arsenal_FC.png",
+            "كنان": "https://upload.wikimedia.org/wikipedia/en/thumb/e/e5/AFC_Bournemouth_%282013%29.svg/960px-AFC_Bournemouth_%282013%29.svg.png",
+            "أمين": "https://upload.wikimedia.org/wikipedia/en/thumb/e/eb/Manchester_City_FC_badge.svg/250px-Manchester_City_FC_badge.svg.png",
+            "الباغر": "https://1000logos.net/wp-content/uploads/2017/04/Logo-Liverpool.png",
+            "رضا": "https://upload.wikimedia.org/wikipedia/en/thumb/7/7c/Everton_FC_logo.svg/250px-Everton_FC_logo.svg.png",
+            "مشري": "https://upload.wikimedia.org/wikipedia/en/d/d0/Brighton_and_Hove_Albion_FC_crest.svg",
+            "سراج": "https://upload.wikimedia.org/wikipedia/en/thumb/e/e5/Nottingham_Forest_F.C._logo.svg/960px-Nottingham_Forest_F.C._logo.svg.png",
+            "حاقو": "https://upload.wikimedia.org/wikipedia/hif/2/25/Newcastle_United_Logo.png"
         };
 
         // Teams and coaches mapping in English - FOR SEASON 10 ONLY
         const teamsCoachesSeason11EN = {
-            "ANIS": "",
-            "RAJAWI": "",
-            "MOHANED": "",
-            "KHALED": "",
-            "CHARLO": "",
-            "FAMA 7AJA": "",
-            "ABDELLAH": "",
-            "KENAN": "",
-            "AMINE": "",
-            "HAKO": "",
-            "RIDA": "",
-            "MECHERI": "",
-            "SIRADJ": "",
-            "BAMBOO": ""
+            "ANIS": "WEST HAM UNITED",
+            "RAJAWI": "CHELSEA",
+            "MOHANED": "ASTON VILLA",
+            "KHALED": "TOTTENHAM HOTSPUR",
+            "CHARLO": "MANCHESTER UNITED",
+            "FAMA 7AJA": "FULHAM",
+            "ABDELLAH": "ARSENAL",
+            "KENAN": "BOURNEMOUTH",
+            "AMINE": "MANCHESTER CITY",
+            "HAKO": "NEWCASTLE UNITED",
+            "RIDA": "EVERTON",
+            "MECHERI": "BRIGHTON",
+            "SIRADJ": "NOTTINGHAM FOREST",
+            "BAMBOO": "CRYSTAL PALACE FC",
+            "ALBAGER": "LIVERPOOL"
         };
 
         // Special matches data
@@ -3233,19 +3481,7 @@
                 description_ar: "أكثر المنافسات شهرة في تاريخ بطولة المدرب الأفضل. واجه هذان المدربان بعضهما في عدة نهائيات ومباريات حاسمة، مما خلق لحظات لا تُنسى.",
                 image: "https://i.ibb.co/fYmgZkyB/classico-2.jpg",
                 teams_en: ".",
-                teams_ar: "."
-            },
-            {
-                id: 2,
-                type_en: "Derby",
-                type_ar: "دربي",
-                name_ar: "أنيس × خالد",
-                name_en: "ANIS × KHALED",
-                description_en: "A fierce local rivalry with high stakes. Both coaches are known for their tactical battles and close matches that often go down to the wire.",
-                description_ar: "منافسة محلية شرسة ذات مخاطر عالية. يشتهر كلا المدربين بمعاركهما التكتيكية ومبارياتهما المتقاربة التي غالباً ما تصل إلى النهاية.",
-                image: "https://i.ibb.co/9xmYP4Y/derby-1.jpg",
-                teams_en: ".",
-                teams_ar: "."
+                teams_ar: "ويستهام يونايتد ضد تشيلسي"
             },
             {
                 id: 3,
@@ -3256,13 +3492,22 @@
                 description_en: "A great showdown brings together top coaches from the Levant.",
                 description_ar: "مواجهة عظيمة تجمع بين كبار المدربين من بلاد الشام.",
                 image: "https://i.ibb.co/9HVfGBkt/LEVANT.jpg",
-                teams_en: ".",
-                teams_ar: "."
+                teams_en: "EVERTON VS BOURNEMOUTH",
+                teams_ar: "بورنموث ضد إيفرتون"
             }
         ];
 
         // News data
         const newsData = [
+            {
+                id: 25,
+                title_en: "",
+                title_ar: "انسحاب خالد وتعويضه بزيد",
+                date: "2026-6-13",
+                image: "https://i.ibb.co/8LDjpRsF/image.jpg",
+                excerpt_en: "",
+                excerpt_ar: "انسحب خالد خالد من الموسم الحادي عشر بسبب عدم رضاه بالفريق ، وتم تعويضه بزيد ، وبناءا على الواعد الجاري بها العمل ، سيتم حظر خالد نهائيا من المشاركة في أي موسم مقبل."
+            },
             {
                 id: 24,
                 title_en: "",
@@ -3507,6 +3752,7 @@
             initSeason10Page();
             initSpecialMatchesPage();
             initNewsPage();
+            initRulesPage();
             
             // Set up event listeners
             setupEventListeners();
@@ -3899,6 +4145,229 @@
             });
         }
 
+        // ============================================================
+        //  RULES & GUIDELINES DATA
+        //  ✏️  EDIT THIS ARRAY to add, remove, or modify rules.
+        //  Each category has: id, icon, title_ar, title_en, rules[].
+        //  Each rule has: title_ar, title_en, desc_ar, desc_en, badge.
+        //  badge options: "mandatory" | "recommended" | "info"
+        // ============================================================
+        const rulesData = [
+            {
+                id: "general",
+                icon: "fas fa-list-check",
+                title_ar: "القواعد العامة",
+                title_en: "General Rules",
+                rules: [
+                    {
+                        title_ar: "الاحترام المتبادل",
+                        title_en: "",
+                        desc_ar: "يجب على جميع المشاركين احترام بعضهم البعض داخل وخارج الملعب. يُحظر أي شكل من أشكال الإساءة أو الاستفزاز.",
+                        desc_en: "",
+                        badge: "mandatory"
+                    },
+                    {
+                        title_ar: "الالتزام بالفريق",
+                        title_en: "",
+                        desc_ar: "يتعين على كل مدرب الالتزام بالفريق الذي تم اختياره له عن طريق القرعة",
+                        desc_en: "",
+                        badge: "mandatory"
+                    },
+                    {
+                        title_ar: "التواصل مع الإدارة",
+                        title_en: "",
+                        desc_ar: "في حال وجود أي مشكلة أو استفسار، يجب التواصل مع الإدارة مباشرة عبر القنوات الرسمية المخصصة لذلك.",
+                        desc_en: "",
+                        badge: "recommended"
+                    },
+                    {
+                        title_ar: "ممثل واحد لكل مدرب",
+                        title_en: "",
+                        desc_ar: "يسمح لكل مدرب التعاقد أو التعاون مع مساعد مدرب واحد فقط طوال فترة الدوري ولا يحق له تغييره.",
+                        desc_en: "",
+                        badge: "mandatory"
+                    }
+                ]
+            },
+            {
+                id: "competition",
+                icon: "fas fa-futbol",
+                title_ar: "قواعد المنافسة",
+                title_en: "Competition Rules",
+                rules: [
+                    {
+                        title_ar: "نظام النقاط",
+                        title_en: "",
+                        desc_ar: "يُمنح 3 نقاط للفوز، نقطة واحدة للتعادل، وصفر نقاط للخسارة. يُستخدم الفارق في الأهداف كمعيار تفضيلي عند التساوي.",
+                        desc_en: "",
+                        badge: "info"
+                    },
+                    {
+                        title_ar: "مباريات الدوري",
+                        title_en: "",
+                        desc_ar: "تُلعب البطولة بنظام الدوري الكامل (ذهاب وإياب). يتواجه كل مدرب ضد جميع المنافسين الآخرين مرتين خلال الموسم.",
+                        desc_en: "",
+                        badge: "info"
+                    },
+                    {
+                        title_ar: "منافسة الكأس",
+                        title_en: "",
+                        desc_ar: "تُجرى منافسة الكأس بشكل متوازٍ مع الدوري بنظام إقصائي. تُحدد جداول مباريات الكأس من قبل اللجنة المنظمة.",
+                        desc_en: "",
+                        badge: "info"
+                    },
+                    {
+                        title_ar: "حالة التعادل في الكأس",
+                        title_en: "",
+                        desc_ar: "في حال التعادل في مباريات الكأس بعد الوقت الأصلي، يُلجأ إلى الأشواط الإضافية وفي حالة استمرار التعادل يذهب الفريقين لركلات الترجيح.",
+                        desc_en: "",
+                        badge: "info"
+                    },
+                    {
+                        title_ar: "الانسحاب أثناء الموسم",
+                        title_en: "",
+                        desc_ar: "الانسحاب من الموسم بعد انطلاقه غير مسموح به إلا في الحالات القصوى ، يحرم كل مدرب انسحب بدون سبب من المشاركة في الموسم القادم.",
+                        desc_en: "",
+                        badge: "mandatory"
+                    }
+                ]
+            },
+            {
+                id: "fairplay",
+                icon: "fas fa-handshake",
+                title_ar: "قواعد اللعب النظيف",
+                title_en: "Fair Play Rules",
+                rules: [
+                    {
+                        title_ar: "حظر التواطؤ",
+                        title_en: "",
+                        desc_ar: "يُحظر تماماً التنسيق بين المدربين للتأثير على نتائج المباريات. أي تلاعب بالنتائج يؤدي إلى الاستبعاد الفوري وإلغاء نتائج الموسم.",
+                        desc_en: "",
+                        badge: "mandatory"
+                    },
+                    {
+                        title_ar: "روح الرياضة",
+                        title_en: "",
+                        desc_ar: "يُتوقع من جميع المشاركين إظهار روح رياضية راقية سواء عند الفوز أو الخسارة. تقبّل النتائج بصدر رحب قيمة أساسية في البطولة.",
+                        desc_en: "",
+                        badge: "recommended"
+                    },
+                    {
+                        title_ar: "احترام قرارات الإدارة",
+                        title_en: "",
+                        desc_ar: "قرارات اللجنة المنظمة نهائية وملزمة. يمكن الاعتراض رسمياً عبر القنوات المحددة خلال مدة 48 ساعة من صدور القرار.",
+                        desc_en: "",
+                        badge: "mandatory"
+                    },
+                    {
+                        title_ar: "حظر استخدام الثغرات",
+                        title_en: "",
+                        desc_ar: "يُحظر استغلال أي ثغرات تقنية في منصة OSM للحصول على ميزة غير عادلة. يجب الإبلاغ فوراً عن أي ثغرة مكتشفة للإدارة.",
+                        desc_en: "",
+                        badge: "mandatory"
+                    },
+                    {
+                        title_ar: "المعسكرات التدريبية",
+                        title_en: "",
+                        desc_ar: "يتم حظر المعسكرات التدريبية قبل انطلاق كل موسم للحفاظ على المنافسة العادلة ، ويمكن لكل مدرب استخدام التدريبات السرية.",
+                        desc_en: "",
+                        badge: "mandatory"
+                    }
+                ]
+            },
+            {
+                id: "admin",
+                icon: "fas fa-cog",
+                title_ar: "الإرشادات الإدارية",
+                title_en: "Administrative Guidelines",
+                rules: [
+                    {
+                        title_ar: "التسجيل والأهلية",
+                        title_en: "",
+                        desc_ar: "ترسل دعوة لكل مدرب على حدة قبل انطلاق الموسم بشهرين أو أكثر.",
+                        desc_en: "",
+                        badge: "info"
+                    },
+                    {
+                        title_ar: "قائمة الاحتياط",
+                        title_en: "",
+                        desc_ar: "تحتفظ اللجنة المنظمة بقائمة احتياط للمدربين المؤهلين. في حال انسحاب أي مدرب يمكن استدعاء بديل من القائمة خلال 24 ساعة.",
+                        desc_en: "",
+                        badge: "info"
+                    },
+                    {
+                        title_ar: "النزاعات والشكاوى",
+                        title_en: "",
+                        desc_ar: "تُقدم جميع النزاعات والشكاوى خطياً عبر القنوات الرسمية للبطولة. سيتم البت فيها خلال 72 ساعة من تلقيها.",
+                        desc_en: "",
+                        badge: "recommended"
+                    },
+                    {
+                        title_ar: "التعديلات على اللوائح",
+                        title_en: "",
+                        desc_ar: "تحتفظ اللجنة المنظمة بالحق في تعديل هذه اللوائح بين المواسم أو خلالها في حالات استثنائية. يتم إخطار جميع المشاركين فور أي تعديل.",
+                        desc_en: "",
+                        badge: "info"
+                    },
+                    {
+                        title_ar: "القرعة",
+                        title_en: "",
+                        desc_ar: "تجرى قرعة الدوري قبل شهر واحد من انطلاق الموسم الجديد ، لا يمكن إعادة القرعة الا بعد ثبوت وقوع خطأ أثناء اجرائها ، في ذلك الحين يتم الغاء القرعة وإجراء أخرى بعد 10 أيام.",
+                        desc_en: "",
+                        badge: "mandatory"
+                    }
+                ]
+            }
+        ];
+
+        // Initialize Rules & Guidelines page
+        function initRulesPage() {
+            const grid = document.getElementById('rulesCategoriesGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            rulesData.forEach((category, catIndex) => {
+                const catTitle = currentLang === 'ar' ? category.title_ar : category.title_en;
+                const ruleCount = category.rules.length;
+
+                // Badge label translations
+                const badgeLabels = {
+                    mandatory:   currentLang === 'ar' ? 'إلزامي'    : 'Mandatory',
+                    recommended: currentLang === 'ar' ? 'موصى به'  : 'Recommended',
+                    info:        currentLang === 'ar' ? 'معلومة'    : 'Info'
+                };
+
+                // Build rule items HTML
+                const rulesHTML = category.rules.map((rule, ruleIndex) => {
+                    const ruleTitle = currentLang === 'ar' ? rule.title_ar : rule.title_en;
+                    const ruleDesc  = currentLang === 'ar' ? rule.desc_ar  : rule.desc_en;
+                    const badgeLabel = badgeLabels[rule.badge] || '';
+                    return `
+                        <div class="rule-item animate-in" style="animation-delay:${0.05 * (catIndex + ruleIndex)}s">
+                            <div class="rule-number">${ruleIndex + 1}</div>
+                            <div class="rule-text">
+                                <strong>${ruleTitle}</strong>
+                                <p>${ruleDesc}</p>
+                            </div>
+                            ${rule.badge ? `<span class="rule-badge ${rule.badge}">${badgeLabel}</span>` : ''}
+                        </div>`;
+                }).join('');
+
+                const catCard = document.createElement('div');
+                catCard.className = 'rules-category-card animate-in';
+                catCard.style.animationDelay = `${0.1 + catIndex * 0.08}s`;
+                catCard.innerHTML = `
+                    <div class="rules-category-header">
+                        <div class="rules-cat-icon"><i class="${category.icon}"></i></div>
+                        <div class="rules-cat-title">${catTitle}</div>
+                        <div class="rules-cat-count">${ruleCount}</div>
+                    </div>
+                    <div class="rules-list">${rulesHTML}</div>
+                `;
+                grid.appendChild(catCard);
+            });
+        }
+
         // Set up event listeners
         function setupEventListeners() {
             // Navigation links
@@ -4028,6 +4497,9 @@
             
             // Refresh news page
             initNewsPage();
+            
+            // Refresh rules page
+            initRulesPage();
             
             // Update footer links
             applyLanguageToElement(document.querySelector('footer'));
@@ -4160,7 +4632,7 @@ const leagueSeasons = {
     "8":  { start:"2025-02-12", end:"2025-03-30",  league:"كارلو",   cup:"أنيس",    participants:["رجاوي","أنيس","فما حاجة","مهند","كارلو","كنان","عبدالله","محمدو","أمين"] },
     "9":  { start:"2025-07-01", end:"2025-07-15",  status:"ملغى",    participants:["رجاوي","أنيس","فما حاجة","مهند","كارلو","الباغر"] },
     "10": { start:"2026-02-01", end:"2026-03-19",  league:"رجاوي",   cup:"رجاوي",   participants:["رجاوي","أنيس","فما حاجة","مهند","كارلو","عبدالله","كنان","زيد","أمين","صلاح الدين","محمدو","خالد","رضا","سراج","مشري"] },
-    "11": { start:"2026-07-10", end:"2026-08-25",  status:"قادم",   league:"",        cup:"",        participants:["رجاوي","أنيس","مهند","عبدالله","كنان","خالد","كارلو","أمين","رضا","مشري","سراج","فما حاجة","حاقو","بامبو","الباغر"] },
+    "11": { start:"2026-07-10", end:"2026-08-25",  status:"قادم",   league:"",        cup:"",        participants:["رجاوي","أنيس","مهند","عبدالله","كنان","زيد","كارلو","أمين","رضا","مشري","سراج","فما حاجة","حاقو","بامبو","الباغر"] },
 };
 
 // Coach images
